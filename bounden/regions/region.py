@@ -1,10 +1,9 @@
 from typing import Generic
 
-from bounden.points import Point
-from bounden.points.types import AxesT, LengthsT
+from bounden.points.types import LengthsT, PointT
 
 
-class Region(Point[AxesT], Generic[AxesT, LengthsT]):
+class Region(Generic[PointT, LengthsT]):
     """
     A region within an n-dimensional volume.
 
@@ -13,15 +12,19 @@ class Region(Point[AxesT], Generic[AxesT, LengthsT]):
     `lengths` describes the length of each of the region's dimensions.
     """
 
-    def __init__(self, position: AxesT, lengths: LengthsT) -> None:
+    def __init__(
+        self,
+        position: PointT,
+        lengths: LengthsT,
+    ) -> None:
         if len(position) != len(lengths):
             raise ValueError(
                 f"Coordinates count ({len(position)}) "
                 f"!= lengths count ({len(lengths)})"
             )
 
-        super().__init__(position)
         self._lengths = lengths
+        self._position = position
 
     @property
     def lengths(self) -> LengthsT:
@@ -30,3 +33,11 @@ class Region(Point[AxesT], Generic[AxesT, LengthsT]):
         """
 
         return self._lengths
+
+    @property
+    def position(self) -> PointT:
+        """
+        Position.
+        """
+
+        return self._position
