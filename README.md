@@ -1,10 +1,10 @@
 # Bounden
 
-**Bounden** describes points and regions within _n_-dimensional volumes.
+**Bounden** describes points and regions within _n_-dimensional space.
 
 ## Points
 
-The `Point` class describes a point within an _n_-dimensional volume.
+The `Point` class describes a point in _n_-dimensional space.
 
 The class's generic type describes the coordinate type of each dimension, and must be specified as a tuple:
 

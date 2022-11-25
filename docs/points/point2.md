@@ -1,6 +1,6 @@
 # Point2 class
 
-The `Point2` class wraps and simplifies the [`Point` class](./point.md) to describe a point within a two-dimensional volume.
+The `Point2` class wraps and simplifies the [`Point` class](./point.md) to describe a point in two-dimensional space.
 
 The class requires two generic types: the types of the `x` and `y` axis respectively:
 

@@ -1,12 +1,14 @@
-from bounden.points.types import XAxisT, XLengthT, YAxisT, YLengthT
+from bounden.points import Point2
+from bounden.points.types import XAxisT, YAxisT
 from bounden.regions.region import Region
+from bounden.volumes import Volume2
 
 
-class Region2(Region[tuple[XAxisT, YAxisT], tuple[XLengthT, YLengthT]]):
+class Region2(Region[Point2[XAxisT, YAxisT], Volume2]):
     """
-    A region within a two-dimensional volume.
+    A region of two-dimensional space.
 
-    `x` and `y` describe the region's origin respectively.
+    `x` and `y` describe the region's origin.
 
     `width` and `height` describe the region's dimensions.
     """
@@ -15,23 +17,7 @@ class Region2(Region[tuple[XAxisT, YAxisT], tuple[XLengthT, YLengthT]]):
         self,
         x: XAxisT,
         y: YAxisT,
-        width: XLengthT,
-        height: YLengthT,
+        width: float,
+        height: float,
     ) -> None:
-        super().__init__((x, y), (width, height))
-
-    @property
-    def height(self) -> YLengthT:
-        """
-        Height.
-        """
-
-        return self.lengths[1]
-
-    @property
-    def width(self) -> XLengthT:
-        """
-        Width.
-        """
-
-        return self.lengths[0]
+        super().__init__(Point2(x, y), Volume2(width, height))

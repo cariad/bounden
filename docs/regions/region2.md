@@ -1,6 +1,6 @@
 # Region2 class
 
-The `Region2` class wraps and simplifies the [`Region` class](./region.md) to describe a region within a two-dimensional volume.
+The `Region2` class wraps and simplifies the [`Region` class](./region.md) to describe a region of two-dimensional space.
 
 ## Construction
 
