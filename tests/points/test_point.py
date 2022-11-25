@@ -1,6 +1,5 @@
 from bounden.points import Point
 
 
-def test_value() -> None:
-    p = Point[tuple[int, int]]((1, 2))
-    assert p.value == (1, 2)
+def test_position() -> None:
+    assert Point[tuple[int, int]]((1, 2)).position == (1, 2)

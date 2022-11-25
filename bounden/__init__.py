@@ -7,6 +7,7 @@ For usage and support, see https://github.com/cariad/bounden.
 from importlib.resources import files
 
 from bounden.points import Point, Point2
+from bounden.regions import Region, Region2
 
 
 def version() -> str:
@@ -21,5 +22,7 @@ def version() -> str:
 __all__ = [
     "Point",
     "Point2",
+    "Region",
+    "Region2",
     "version",
 ]

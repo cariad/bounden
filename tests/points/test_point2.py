@@ -1,9 +1,18 @@
+from pytest import fixture
+
 from bounden.points import Point2
 
-
-def test_x(point2: Point2[int, int]) -> None:
-    assert point2.x == 1
+PointType = Point2[int, int]
 
 
-def test_y(point2: Point2[int, int]) -> None:
-    assert point2.y == 2
+@fixture
+def point() -> PointType:
+    return PointType(1, 2)
+
+
+def test_x(point: PointType) -> None:
+    assert point.x == 1
+
+
+def test_y(point: PointType) -> None:
+    assert point.y == 2
