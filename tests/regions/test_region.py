@@ -26,4 +26,4 @@ def test_lengths(region: RegionType) -> None:
 
 # pylint: disable-next=redefined-outer-name
 def test_position(region: RegionType) -> None:
-    assert region.position.position == ("A", 1, False)
+    assert region.position.coordinates == ("A", 1, False)

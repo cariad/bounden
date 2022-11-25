@@ -11,10 +11,10 @@ def point() -> PointType:
 
 
 # pylint: disable-next=redefined-outer-name
-def test_len(point: PointType) -> None:
-    assert len(point) == 2
+def test_coordinates(point: PointType) -> None:
+    assert point.coordinates == (1, 2)
 
 
 # pylint: disable-next=redefined-outer-name
-def test_position(point: PointType) -> None:
-    assert point.position == (1, 2)
+def test_len(point: PointType) -> None:
+    assert len(point) == 2

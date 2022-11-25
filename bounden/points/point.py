@@ -5,19 +5,19 @@ class Point(PointABC[AxesT]):
     """
     A point within an n-dimensional volume.
 
-    `position` describes the coordinates of the point.
+    `coordinates` describes the coordinates of the point.
     """
 
-    def __init__(self, position: AxesT) -> None:
-        self._position = position
+    def __init__(self, coordinates: AxesT) -> None:
+        self._coordinates = coordinates
 
     def __len__(self) -> int:
-        return len(self._position)
+        return len(self._coordinates)
 
     @property
-    def position(self) -> AxesT:
+    def coordinates(self) -> AxesT:
         """
-        Position.
+        Coordinates.
         """
 
-        return self._position
+        return self._coordinates

@@ -18,7 +18,7 @@ class Point2(Point[tuple[XAxisT, YAxisT]]):
         X coordinate.
         """
 
-        return self.position[0]
+        return self.coordinates[0]
 
     @property
     def y(self) -> YAxisT:
@@ -26,4 +26,4 @@ class Point2(Point[tuple[XAxisT, YAxisT]]):
         Y coordinate.
         """
 
-        return self.position[1]
+        return self.coordinates[1]
