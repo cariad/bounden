@@ -46,6 +46,7 @@ setup(
     ],
     package_data={
         "bounden": ["py.typed"],
+        "bounden.points": ["py.typed"],
     },
     python_requires=">=3.9",
     url="https://github.com/cariad/bounden",

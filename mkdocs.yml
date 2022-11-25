@@ -1,8 +1,16 @@
 site_name: Bounden
 site_url: https://cariad.github.io/bounden/
 
+markdown_extensions:
+  - pymdownx.highlight
+  - pymdownx.superfences
+
 nav:
   - index.md
+  - Points:
+      - points/index.md
+      - points/point.md
+      - points/point2.md
 
 theme:
   name: material
