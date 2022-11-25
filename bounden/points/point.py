@@ -1,20 +1,22 @@
 from typing import Generic
 
-from bounden.points.types import CoordinatesT
+from bounden.points.types import AxesT
 
 
-class Point(Generic[CoordinatesT]):
+class Point(Generic[AxesT]):
     """
     A point within an n-dimensional volume.
+
+    `position` describes the coordinates of the point.
     """
 
-    def __init__(self, value: CoordinatesT) -> None:
-        self._value = value
+    def __init__(self, position: AxesT) -> None:
+        self._position = position
 
     @property
-    def value(self) -> CoordinatesT:
+    def position(self) -> AxesT:
         """
-        Coordinates.
+        Position.
         """
 
-        return self._value
+        return self._position

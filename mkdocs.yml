@@ -11,6 +11,10 @@ nav:
       - points/index.md
       - points/point.md
       - points/point2.md
+  - Regions:
+      - regions/index.md
+      - regions/region.md
+      - regions/region2.md
 
 theme:
   name: material

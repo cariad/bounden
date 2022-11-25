@@ -16,13 +16,13 @@ in_rect = Point[tuple[int, int]]((0, 0))
 in_cube = Point[tuple[int, int, int]]((0, 0, 0))
 ```
 
-The coordinates are read from the `value` property:
+The position is read from the `position` property:
 
 ```python
 from bounden import Point
 
 point = Point[tuple[int, int, int]]((1, 2, 3))
-print(point.value)
+print(point.position)
 # (1, 2, 3)
 ```
 

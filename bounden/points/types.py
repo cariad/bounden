@@ -1,6 +1,13 @@
 from typing import Any, TypeVar
 
-CoordinatesT = TypeVar("CoordinatesT", bound=tuple[Any, ...])
+AxesT = TypeVar("AxesT", bound=tuple[Any, ...])
+LengthsT = TypeVar("LengthsT", bound=tuple[float, ...])
+"""
+The dimensions of a region (e.g. width and height).
+"""
 
-XCoordinateT = TypeVar("XCoordinateT")
-YCoordinateT = TypeVar("YCoordinateT")
+XAxisT = TypeVar("XAxisT")
+YAxisT = TypeVar("YAxisT")
+
+XLengthT = TypeVar("XLengthT", bound=float)
+YLengthT = TypeVar("YLengthT", bound=float)
