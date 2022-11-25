@@ -8,6 +8,7 @@ from importlib.resources import files
 
 from bounden.points import Point, Point2
 from bounden.regions import Region, Region2
+from bounden.vectors import Vector, Vector2
 from bounden.volumes import Volume, Volume2
 
 
@@ -25,6 +26,8 @@ __all__ = [
     "Point2",
     "Region",
     "Region2",
+    "Vector",
+    "Vector2",
     "Volume",
     "Volume2",
     "version",

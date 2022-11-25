@@ -1,6 +1,7 @@
 from bounden.points import Point2
 from bounden.points.types import XAxisT, YAxisT
 from bounden.regions.region import Region
+from bounden.vectors import Vector2
 from bounden.volumes import Volume2
 
 
@@ -21,3 +22,44 @@ class Region2(Region[Point2[XAxisT, YAxisT], Volume2]):
         height: float,
     ) -> None:
         super().__init__(Point2(x, y), Volume2(width, height))
+
+    @property
+    def bottom(self) -> YAxisT:
+        """
+        Bottom.
+        """
+
+        return self.bottom_right[1]
+
+    @property
+    def bottom_right(self) -> tuple[XAxisT, YAxisT]:
+        """
+        Bottom right.
+        """
+
+        vector = Vector2(self.volume.width, self.volume.height)
+        return (self.position + vector).coordinates
+
+    @property
+    def left(self) -> XAxisT:
+        """
+        Left.
+        """
+
+        return self.position.x
+
+    @property
+    def right(self) -> XAxisT:
+        """
+        Right.
+        """
+
+        return self.bottom_right[0]
+
+    @property
+    def top(self) -> YAxisT:
+        """
+        Top.
+        """
+
+        return self.position.y
