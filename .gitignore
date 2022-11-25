@@ -1,0 +1,5 @@
+.coverage
+__pycache__
+bounden.egg-info
+coverage.xml
+dist
