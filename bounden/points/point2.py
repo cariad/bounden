@@ -4,7 +4,7 @@ from bounden.points.types import XAxisT, YAxisT
 
 class Point2(Point[tuple[XAxisT, YAxisT]]):
     """
-    A point within a two-dimensional volume.
+    A point in two-dimensional space.
 
     `x` and `y` are the x and y coordinates respectively.
     """

@@ -45,11 +45,13 @@ setup(
         "bounden",
         "bounden.points",
         "bounden.regions",
+        "bounden.volumes",
     ],
     package_data={
         "bounden": ["py.typed"],
         "bounden.points": ["py.typed"],
         "bounden.regions": ["py.typed"],
+        "bounden.volumes": ["py.typed"],
     },
     python_requires=">=3.9",
     url="https://github.com/cariad/bounden",

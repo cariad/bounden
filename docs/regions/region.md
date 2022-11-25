@@ -1,6 +1,6 @@
 # Region class
 
-The `Region` class describes a region within an _n_-dimensional volume.
+The `Region` class describes a region of _n_-dimensional space.
 
 ## Construction
 
@@ -16,7 +16,7 @@ You must also initialise the region with:
 
 ### Construction examples
 
-Given a one-dimensional volume with an integer axis, this code describes the region that starts at `(2)` and is 3 units wide:
+Given one-dimensional space with an integer axis, this code describes the region that starts at `(2)` and is 3 units wide:
 
 ```python
 from bounden import Region
@@ -32,7 +32,7 @@ region = Region[
 #  .  . [x  x  x] .  .
 ```
 
-Given a one-dimensional volume with a string axis, this code describes the region that starts at `(C)` and is 3 strings wide:
+Given one-dimensional space with a string axis, this code describes the region that starts at `(C)` and is 3 strings wide:
 
 ```python
 from bounden import Region
@@ -48,7 +48,7 @@ region = Region[
 #  .  . [x  x  x] .
 ```
 
-Given a two-dimensional volume with integer axes, this code describes the region that starts at `(1, 2)`, is 3 units wide and 4 units tall:
+Given two-dimensional space with integer axes, this code describes the region that starts at `(1, 2)`, is 3 units wide and 4 units tall:
 
 ```python
 from bounden import Region
@@ -70,7 +70,7 @@ region = Region[
 #  6  .  .  .  .  .  .
 ```
 
-Given a two-dimensional volume with a string y axis and integer x axis, this code describes the region that starts at `(B, 2)`, is 3 units wide and 4 units tall:
+Given two-dimensional space with a string y axis and integer x axis, this code describes the region that starts at `(B, 2)`, is 3 units wide and 4 units tall:
 
 ```python
 from bounden import Region

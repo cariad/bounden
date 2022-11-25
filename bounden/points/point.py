@@ -3,7 +3,7 @@ from bounden.points.types import AxesT, PointABC
 
 class Point(PointABC[AxesT]):
     """
-    A point within an n-dimensional volume.
+    A point in n-dimensional space.
 
     `coordinates` describes the coordinates of the point.
     """

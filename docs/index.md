@@ -1,6 +1,6 @@
 # Bounden
 
-**Bounden** describes points and regions within _n_-dimensional volumes.
+**Bounden** describes points and regions within _n_-dimensional space.
 
 ## Support
 
