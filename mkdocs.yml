@@ -1,0 +1,8 @@
+site_name: Bounden
+site_url: https://cariad.github.io/bounden/
+
+nav:
+  - index.md
+
+theme:
+  name: material
