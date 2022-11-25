@@ -1,9 +1,7 @@
-from typing import Generic
-
-from bounden.points.types import AxesT
+from bounden.points.types import AxesT, PointABC
 
 
-class Point(Generic[AxesT]):
+class Point(PointABC[AxesT]):
     """
     A point within an n-dimensional volume.
 
@@ -12,6 +10,9 @@ class Point(Generic[AxesT]):
 
     def __init__(self, position: AxesT) -> None:
         self._position = position
+
+    def __len__(self) -> int:
+        return len(self._position)
 
     @property
     def position(self) -> AxesT:
