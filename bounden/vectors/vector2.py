@@ -17,7 +17,7 @@ class Vector2(Vector[tuple[float, float]]):
         X dimension length.
         """
 
-        return self._lengths[0]
+        return self[0]
 
     @property
     def y(self) -> float:
@@ -25,4 +25,4 @@ class Vector2(Vector[tuple[float, float]]):
         Y dimension length.
         """
 
-        return self._lengths[1]
+        return self[1]

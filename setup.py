@@ -38,7 +38,7 @@ setup(
     description="Bounds and positions",
     include_package_data=True,
     install_requires=[
-        "rebelbase==1.0.0a6",
+        "rebelbase==1.0.0a7",
     ],
     license="MIT",
     long_description=long_description,

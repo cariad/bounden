@@ -1,16 +1,22 @@
-from typing import Any, Generic, TypeVar, cast
+from typing import Any, Generic, Optional, TypeVar, cast
 
 from bounden.coordinates import AxesT, Coordinate
+from bounden.protocols import PointProtocol, RegionProtocol
 from bounden.vectors import Vector
 
 
-class Point(Generic[AxesT]):
+class Point(PointProtocol, Generic[AxesT]):
     """
     A point in n-dimensional space.
     """
 
-    def __init__(self, coordinates: AxesT) -> None:
+    def __init__(
+        self,
+        coordinates: AxesT,
+        parent: Optional[RegionProtocol] = None,
+    ) -> None:
         self._coordinates = coordinates
+        self._parent = parent
 
     def __add__(self, other: Any) -> "Point[AxesT]":
         if isinstance(other, Vector):
@@ -22,12 +28,12 @@ class Point(Generic[AxesT]):
                     f"point dimension count ({len(self)})"
                 )
 
-            cl = [c + v.lengths[i] for i, c in enumerate(self.coordinates)]
-            return Point[AxesT](cast(AxesT, tuple(cl)))
+            cl = [c + v[i] for i, c in enumerate(self.coordinates)]
+            return Point[AxesT](cast(AxesT, tuple(cl)), parent=self._parent)
 
         if isinstance(other, (float, int)):
             cl = [c + other for c in self.coordinates]
-            return Point[AxesT](cast(AxesT, tuple(cl)))
+            return Point[AxesT](cast(AxesT, tuple(cl)), parent=self._parent)
 
         raise ValueError(
             f"Cannot add {repr(other)} ({other.__class__.__name__}) to "
@@ -54,12 +60,31 @@ class Point(Generic[AxesT]):
         return self.__add__(other * -1)
 
     @property
+    def absolute(self) -> "Point[AxesT]":
+        """
+        Copy of this point with absolute coordinates.
+        """
+
+        if self._parent:
+            return self + self._parent.absolute.position.vector
+
+        return self
+
+    @property
     def coordinates(self) -> AxesT:
         """
         Coordinates.
         """
 
         return self._coordinates
+
+    @property
+    def vector(self) -> Vector[Any]:
+        """
+        Coordinates as a vector.
+        """
+
+        return Vector(tuple(float(c) for c in self.coordinates))
 
 
 PointT = TypeVar("PointT", bound=Point[Any])

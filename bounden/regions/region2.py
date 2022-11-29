@@ -1,12 +1,11 @@
-from bounden.coordinates import XAxisT, YAxisT
+from bounden.coordinates import Coordinate, XAxisT, YAxisT
 from bounden.points import Point2
 from bounden.regions import Region
-from bounden.vectors import Vector2
 from bounden.volumes import Volume2
 from bounden.volumes.types import XLengthT, YLengthT
 
 
-class Region2(Region[Point2[XAxisT, YAxisT], Volume2[XLengthT, YLengthT]]):
+class Region2(Region[tuple[XAxisT, YAxisT], tuple[XLengthT, YLengthT]]):
     """
     A region of two-dimensional space.
 
@@ -25,21 +24,12 @@ class Region2(Region[Point2[XAxisT, YAxisT], Volume2[XLengthT, YLengthT]]):
         super().__init__(Point2(x, y), Volume2(width, height))
 
     @property
-    def bottom(self) -> YAxisT:
+    def bottom(self) -> Coordinate[YAxisT]:
         """
         Bottom.
         """
 
-        return self.bottom_right[1]
-
-    @property
-    def bottom_right(self) -> tuple[XAxisT, YAxisT]:
-        """
-        Bottom right.
-        """
-
-        vector = Vector2(self.volume.width, self.volume.height)
-        return (self.position + vector).coordinates
+        return self.top + self.height
 
     @property
     def height(self) -> YLengthT:
@@ -47,7 +37,7 @@ class Region2(Region[Point2[XAxisT, YAxisT], Volume2[XLengthT, YLengthT]]):
         Height.
         """
 
-        return self.volume.height
+        return self.volume.lengths[1]
 
     @property
     def left(self) -> XAxisT:
@@ -55,15 +45,22 @@ class Region2(Region[Point2[XAxisT, YAxisT], Volume2[XLengthT, YLengthT]]):
         Left.
         """
 
-        return self.position.x
+        return self.position.coordinates[0]
+
+    def point2(self, x: XAxisT, y: YAxisT) -> Point2[XAxisT, YAxisT]:
+        """
+        Creates a child point.
+        """
+
+        return Point2(x, y, parent=self)
 
     @property
-    def right(self) -> XAxisT:
+    def right(self) -> Coordinate[XAxisT]:
         """
         Right.
         """
 
-        return self.bottom_right[0]
+        return self.left + self.width
 
     @property
     def top(self) -> YAxisT:
@@ -71,7 +68,7 @@ class Region2(Region[Point2[XAxisT, YAxisT], Volume2[XLengthT, YLengthT]]):
         Top.
         """
 
-        return self.position.y
+        return self.position.coordinates[1]
 
     @property
     def width(self) -> XLengthT:
@@ -79,4 +76,4 @@ class Region2(Region[Point2[XAxisT, YAxisT], Volume2[XLengthT, YLengthT]]):
         Width.
         """
 
-        return self.volume.width
+        return self.volume.lengths[0]

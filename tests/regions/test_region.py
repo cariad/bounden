@@ -13,19 +13,17 @@ from bounden import (
 )
 
 RegionType = Region[
-    Point[tuple[StringCoordinate, IntegerCoordinate]],
-    Volume[tuple[float, float]],
+    tuple[StringCoordinate, IntegerCoordinate],
+    tuple[float, float],
 ]
 
 
 @fixture
 def region() -> RegionType:
     return RegionType(
-        Point(
-            (
-                StringCoordinate("A"),
-                IntegerCoordinate(1),
-            )
+        (
+            StringCoordinate("A"),
+            IntegerCoordinate(1),
         ),
         Volume((3, 7)),
     )
@@ -33,7 +31,7 @@ def region() -> RegionType:
 
 def test_arg_count_mismatch() -> None:
     with raises(ValueError) as ex:
-        _ = Region[Point[tuple[IntegerCoordinate]], Volume[tuple[int, int]]](
+        _ = Region[tuple[IntegerCoordinate], tuple[int, int]](
             Point((IntegerCoordinate(0),)),
             Volume((1, 1)),
         )
