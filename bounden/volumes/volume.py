@@ -1,7 +1,9 @@
-from bounden.volumes.types import LengthsT, VolumeABC
+from typing import Any, Generic, TypeVar
+
+from bounden.volumes.types import LengthsT
 
 
-class Volume(VolumeABC[LengthsT]):
+class Volume(Generic[LengthsT]):
     """
     An n-dimensional volume.
 
@@ -21,3 +23,6 @@ class Volume(VolumeABC[LengthsT]):
         """
 
         return self._lengths
+
+
+VolumeT = TypeVar("VolumeT", bound=Volume[Any])
