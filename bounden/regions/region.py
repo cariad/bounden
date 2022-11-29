@@ -1,7 +1,7 @@
 from typing import Generic
 
-from bounden.points.types import PointT
-from bounden.volumes.types import VolumeT
+from bounden.points import PointT
+from bounden.volumes import VolumeT
 
 
 class Region(Generic[PointT, VolumeT]):
@@ -13,11 +13,7 @@ class Region(Generic[PointT, VolumeT]):
     `volume` describes the region's size.
     """
 
-    def __init__(
-        self,
-        position: PointT,
-        volume: VolumeT,
-    ) -> None:
+    def __init__(self, position: PointT, volume: VolumeT) -> None:
         if len(position) != len(volume):
             raise ValueError(
                 f"Coordinates count ({len(position)}) "

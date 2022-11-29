@@ -1,22 +1,31 @@
 from pytest import fixture, raises
 
 from bounden import Point, Region, Volume
+from bounden.coordinates import IntegerCoordinate, StringCoordinate
 
 RegionType = Region[
-    Point[tuple[str, int, bool]],
-    Volume[tuple[float, float, float]],
+    Point[tuple[StringCoordinate, IntegerCoordinate]],
+    Volume[tuple[float, float]],
 ]
 
 
 @fixture
 def region() -> RegionType:
-    return RegionType(Point(("A", 1, False)), Volume((3, 7, 9.3)))
+    return RegionType(
+        Point(
+            (
+                StringCoordinate("A"),
+                IntegerCoordinate(1),
+            )
+        ),
+        Volume((3, 7)),
+    )
 
 
 def test_arg_count_mismatch() -> None:
     with raises(ValueError) as ex:
-        _ = Region[Point[tuple[int]], Volume[tuple[int, int]]](
-            Point((0,)),
+        _ = Region[Point[tuple[IntegerCoordinate]], Volume[tuple[int, int]]](
+            Point((IntegerCoordinate(0),)),
             Volume((1, 1)),
         )
     assert str(ex.value) == "Coordinates count (1) != lengths count (2)"
@@ -24,9 +33,12 @@ def test_arg_count_mismatch() -> None:
 
 # pylint: disable-next=redefined-outer-name
 def test_position(region: RegionType) -> None:
-    assert region.position.coordinates == ("A", 1, False)
+    assert region.position.coordinates == (
+        StringCoordinate("A"),
+        IntegerCoordinate(1),
+    )
 
 
 # pylint: disable-next=redefined-outer-name
 def test_size(region: RegionType) -> None:
-    assert region.volume.lengths == (3, 7, 9.3)
+    assert region.volume.lengths == (3, 7)

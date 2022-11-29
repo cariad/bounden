@@ -1,3 +1,4 @@
+-r requirements.txt
 isort~=5.10
 mkdocs~=1.4
 mkdocs-material~=8.5
