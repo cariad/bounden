@@ -5,6 +5,7 @@ from pytest import fixture, mark, raises
 from bounden import (
     FloatCoordinate,
     IntegerCoordinate,
+    Length,
     Point,
     Region,
     StringCoordinate,
@@ -92,12 +93,76 @@ def test_center(r: Region[Any, Any], expect: Point[Any]) -> None:
     assert r.center == expect
 
 
+def test_eq__not() -> None:
+    assert Region(Point((FloatCoordinate(2),)), Volume((6,))) != "foo"
+
+
+@mark.parametrize(
+    "r, d, expect",
+    [
+        (
+            Region(Point((FloatCoordinate(2),)), Volume((6,))),
+            1,
+            Region(Point((FloatCoordinate(1.5),)), Volume((7,))),
+        ),
+        (
+            Region(Point((IntegerCoordinate(2),)), Volume((6,))),
+            1,
+            # As an IntegerCoordinate, this is intentionally 2 rather than 1.5:
+            Region(Point((IntegerCoordinate(2),)), Volume((7,))),
+        ),
+        (
+            Region(Point((FloatCoordinate(2),)), Volume((6,))),
+            -1,
+            Region(Point((FloatCoordinate(2.5),)), Volume((5,))),
+        ),
+        (
+            Region(
+                Point((FloatCoordinate(2), FloatCoordinate(3))),
+                Volume((6, 7)),
+            ),
+            -4,
+            Region(
+                Point((FloatCoordinate(4), FloatCoordinate(5))),
+                Volume((2, 3)),
+            ),
+        ),
+        (
+            Region(
+                Point((FloatCoordinate(2), FloatCoordinate(3))),
+                Volume((6, 7)),
+            ),
+            8,
+            Region(
+                Point((FloatCoordinate(-2), FloatCoordinate(-1))),
+                Volume((14, 15)),
+            ),
+        ),
+    ],
+)
+def test_expand(
+    r: Region[Any, Any],
+    d: Length,
+    expect: Region[Any, Any],
+) -> None:
+    assert r.expand(d) == expect
+
+
 # pylint: disable-next=redefined-outer-name
 def test_position(region: RegionType) -> None:
     assert region.position.coordinates == (
         StringCoordinate("A"),
         IntegerCoordinate(1),
     )
+
+
+def test_repr() -> None:
+    r = Region(
+        Point((FloatCoordinate(2.1), FloatCoordinate(2.2))),
+        Volume((6.4, 6.5)),
+    )
+
+    assert repr(r) == "(2.1, 2.2) x (6.4, 6.5)"
 
 
 # pylint: disable-next=redefined-outer-name

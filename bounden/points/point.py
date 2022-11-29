@@ -13,20 +13,26 @@ class Point(Generic[AxesT]):
         self._coordinates = coordinates
 
     def __add__(self, other: Any) -> "Point[AxesT]":
-        if not isinstance(other, Vector):
-            t = other.__class__.__name__
-            raise ValueError(f"Can add only vectors (not {t}) to points")
+        if isinstance(other, Vector):
+            v: Vector[Any] = other
 
-        v: Vector[Any] = other
+            if len(v) != len(self):
+                raise ValueError(
+                    f"Vector force count ({len(v)}) != "
+                    f"point dimension count ({len(self)})"
+                )
 
-        if len(v) != len(self):
-            raise ValueError(
-                f"Vector force count ({len(v)}) != "
-                f"point dimension count ({len(self)})"
-            )
+            cl = [c + v.lengths[i] for i, c in enumerate(self.coordinates)]
+            return Point[AxesT](cast(AxesT, tuple(cl)))
 
-        cl = [c + v.lengths[i] for i, c in enumerate(self.coordinates)]
-        return Point[AxesT](cast(AxesT, tuple(cl)))
+        if isinstance(other, (float, int)):
+            cl = [c + other for c in self.coordinates]
+            return Point[AxesT](cast(AxesT, tuple(cl)))
+
+        raise ValueError(
+            f"Cannot add {repr(other)} ({other.__class__.__name__}) to "
+            f"{self.__class__.__name__}"
+        )
 
     def __getitem__(self, index: int) -> Coordinate[Any]:
         return self.coordinates[index]
@@ -43,6 +49,9 @@ class Point(Generic[AxesT]):
 
     def __repr__(self) -> str:
         return str(self._coordinates)
+
+    def __sub__(self, other: Any) -> "Point[AxesT]":
+        return self.__add__(other * -1)
 
     @property
     def coordinates(self) -> AxesT:

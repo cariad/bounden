@@ -31,7 +31,7 @@ def test_add__not_vector(point: PointType) -> None:
     with raises(ValueError) as ex:
         _ = point + "foo"
 
-    assert str(ex.value) == "Can add only vectors (not str) to points"
+    assert str(ex.value) == "Cannot add 'foo' (str) to Point"
 
 
 # pylint: disable-next=redefined-outer-name
@@ -44,5 +44,6 @@ def test_len(point: PointType) -> None:
     assert len(point) == 2
 
 
+# pylint: disable-next=redefined-outer-name
 def test_repr(point: PointType) -> None:
     assert repr(point) == "(Z, 2)"
