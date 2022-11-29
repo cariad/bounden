@@ -1,6 +1,6 @@
 from typing import Any, Generic, TypeVar, cast
 
-from bounden.coordinates import AxesT
+from bounden.coordinates import AxesT, Coordinate
 from bounden.vectors import Vector
 
 
@@ -28,8 +28,21 @@ class Point(Generic[AxesT]):
         cl = [c + v.lengths[i] for i, c in enumerate(self.coordinates)]
         return Point[AxesT](cast(AxesT, tuple(cl)))
 
+    def __getitem__(self, index: int) -> Coordinate[Any]:
+        return self.coordinates[index]
+
+    def __eq__(self, other: Any) -> bool:
+        if isinstance(other, Point):
+            o: Point[Any] = other
+            return bool(self.coordinates == o.coordinates)
+
+        return bool(self.coordinates == other)
+
     def __len__(self) -> int:
         return len(self._coordinates)
+
+    def __repr__(self) -> str:
+        return str(self._coordinates)
 
     @property
     def coordinates(self) -> AxesT:

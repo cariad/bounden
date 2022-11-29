@@ -1,6 +1,6 @@
-from typing import Any, Generic, TypeVar
+from typing import Any, Generic, Iterator, TypeVar
 
-from bounden.volumes.types import LengthsT
+from bounden.volumes.types import Length, LengthsT
 
 
 class Volume(Generic[LengthsT]):
@@ -12,6 +12,10 @@ class Volume(Generic[LengthsT]):
 
     def __init__(self, lengths: LengthsT) -> None:
         self._lengths = lengths
+
+    def __iter__(self) -> Iterator[Length]:
+        for length in self._lengths:
+            yield length
 
     def __len__(self) -> int:
         return len(self._lengths)
