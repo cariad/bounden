@@ -1,4 +1,4 @@
-from bounden.axes.types import XAxisT, YAxisT
+from bounden.coordinates.types import XAxisT, YAxisT
 from bounden.points.point import Point
 
 

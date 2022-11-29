@@ -1,6 +1,6 @@
 from typing import Any, Generic, TypeVar, cast
 
-from bounden.axes import AxesT
+from bounden.coordinates import AxesT
 from bounden.vectors import Vector
 
 
