@@ -1,6 +1,6 @@
+from bounden.coordinates import XAxisT, YAxisT
 from bounden.points import Point2
-from bounden.points.types import XAxisT, YAxisT
-from bounden.regions.region import Region
+from bounden.regions import Region
 from bounden.vectors import Vector2
 from bounden.volumes import Volume2
 
