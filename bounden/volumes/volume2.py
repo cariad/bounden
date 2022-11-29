@@ -1,18 +1,19 @@
+from bounden.volumes.types import XLengthT, YLengthT
 from bounden.volumes.volume import Volume
 
 
-class Volume2(Volume[tuple[float, float]]):
+class Volume2(Volume[tuple[XLengthT, YLengthT]]):
     """
     A two-dimensional volume.
 
     `width` and `height` describe the volume's width and height.
     """
 
-    def __init__(self, width: float, height: float) -> None:
+    def __init__(self, width: XLengthT, height: YLengthT) -> None:
         super().__init__((width, height))
 
     @property
-    def height(self) -> float:
+    def height(self) -> YLengthT:
         """
         Height.
         """
@@ -20,7 +21,7 @@ class Volume2(Volume[tuple[float, float]]):
         return self.lengths[1]
 
     @property
-    def width(self) -> float:
+    def width(self) -> XLengthT:
         """
         Width.
         """

@@ -3,7 +3,7 @@ from pytest import fixture
 from bounden import IntegerCoordinate, StringCoordinate
 from bounden.regions import Region2
 
-Region2Type = Region2[StringCoordinate, IntegerCoordinate]
+Region2Type = Region2[StringCoordinate, IntegerCoordinate, int, int]
 
 
 @fixture
@@ -22,6 +22,11 @@ def test_bottom_right(region: Region2Type) -> None:
         StringCoordinate("AAG"),
         IntegerCoordinate(11),
     )
+
+
+# pylint: disable-next=redefined-outer-name
+def test_height(region: Region2Type) -> None:
+    assert region.height == 9
 
 
 # pylint: disable-next=redefined-outer-name
@@ -57,3 +62,8 @@ def test_volume__height(region: Region2Type) -> None:
 # pylint: disable-next=redefined-outer-name
 def test_volume__width(region: Region2Type) -> None:
     assert region.volume.width == 7
+
+
+# pylint: disable-next=redefined-outer-name
+def test_width(region: Region2Type) -> None:
+    assert region.width == 7
