@@ -37,6 +37,9 @@ setup(
     classifiers=classifiers,
     description="Bounds and positions",
     include_package_data=True,
+    install_requires=[
+        "rebelbase==1.0.0a6",
+    ],
     license="MIT",
     long_description=long_description,
     long_description_content_type="text/markdown",
