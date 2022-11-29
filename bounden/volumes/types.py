@@ -1,7 +1,9 @@
 from abc import ABC, abstractmethod
 from typing import Any, Generic, TypeVar
 
-LengthsT = TypeVar("LengthsT", bound=tuple[float, ...])
+Length = float | int
+
+LengthsT = TypeVar("LengthsT", bound=tuple[Length, ...])
 """
 The dimensions of a region (e.g. width and height).
 """
@@ -20,3 +22,6 @@ class VolumeABC(ABC, Generic[LengthsT]):
 
 
 VolumeT = TypeVar("VolumeT", bound=VolumeABC[Any])
+
+XLengthT = TypeVar("XLengthT", bound=Length)
+YLengthT = TypeVar("YLengthT", bound=Length)

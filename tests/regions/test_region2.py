@@ -3,7 +3,7 @@ from pytest import fixture
 from bounden import IntegerCoordinate, StringCoordinate
 from bounden.regions import Region2
 
-Region2Type = Region2[StringCoordinate, IntegerCoordinate]
+Region2Type = Region2[StringCoordinate, IntegerCoordinate, int, int]
 
 
 @fixture
