@@ -1,6 +1,9 @@
-from typing import Generic
+from typing import Callable, Generic
 
+from bounden.coordinates.types import AxesT
 from bounden.vectors.types import LengthsT
+
+AxisTranslator = Callable[[AxesT, LengthsT], AxesT]
 
 
 class Vector(Generic[LengthsT]):
