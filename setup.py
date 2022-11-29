@@ -58,7 +58,13 @@ setup(
         "bounden.vectors": ["py.typed"],
         "bounden.volumes": ["py.typed"],
     },
+    project_urls={
+        "Documentation": "https://bounden.dev",
+        "Funding": "https://github.com/sponsors/cariad",
+        "Issues": "https://github.com/cariad/bounden/issues",
+        "Source": "https://github.com/cariad/bounden",
+    },
     python_requires=">=3.9",
-    url="https://github.com/cariad/bounden",
+    url="https://bounden.dev",
     version=curr_version,
 )
