@@ -1,5 +1,5 @@
+from bounden.axes.types import XAxisT, YAxisT
 from bounden.points.point import Point
-from bounden.points.types import XAxisT, YAxisT
 
 
 class Point2(Point[tuple[XAxisT, YAxisT]]):

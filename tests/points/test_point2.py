@@ -1,18 +1,20 @@
 from pytest import fixture
 
-from bounden.points import Point2
+from bounden import IntegerCoordinate, Point2, StringCoordinate
 
-PointType = Point2[int, int]
+PointType = Point2[StringCoordinate, IntegerCoordinate]
 
 
 @fixture
 def point() -> PointType:
-    return PointType(1, 2)
+    return PointType(StringCoordinate("ZZ"), IntegerCoordinate(2))
 
 
+# pylint: disable-next=redefined-outer-name
 def test_x(point: PointType) -> None:
-    assert point.x == 1
+    assert point.x == StringCoordinate("ZZ")
 
 
+# pylint: disable-next=redefined-outer-name
 def test_y(point: PointType) -> None:
-    assert point.y == 2
+    assert point.y == IntegerCoordinate(2)

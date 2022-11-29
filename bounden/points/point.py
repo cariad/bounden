@@ -1,14 +1,12 @@
-from typing import Any, cast
+from typing import Any, Generic, TypeVar, cast
 
-from bounden.points.types import AxesT, PointABC
+from bounden.axes import AxesT
 from bounden.vectors import Vector
 
 
-class Point(PointABC[AxesT]):
+class Point(Generic[AxesT]):
     """
     A point in n-dimensional space.
-
-    `coordinates` describes the coordinates of the point.
     """
 
     def __init__(self, coordinates: AxesT) -> None:
@@ -40,3 +38,6 @@ class Point(PointABC[AxesT]):
         """
 
         return self._coordinates
+
+
+PointT = TypeVar("PointT", bound=Point[Any])
