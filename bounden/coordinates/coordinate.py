@@ -13,17 +13,20 @@ class Coordinate(ABC, Generic[ValueT]):
         self.coordinate = coordinate
 
     def __add__(self, other: Any) -> "Coordinate[ValueT]":
-        if isinstance(float, int) or isinstance(other, int):
+        if isinstance(other, (float, int)):
             return self.translate(other)
 
-        raise ValueError("Can translate only by numeric distances")
+        raise ValueError(
+            f"Can translate only by numeric distances, not "
+            f"{other.__class__.__name__} ({repr(other)})"
+        )
 
     def __eq__(self, other: Any) -> bool:
-        if not isinstance(other, Coordinate):
-            return False
+        if isinstance(other, Coordinate):
+            o: Coordinate[Any] = other
+            return bool(self.coordinate == o.coordinate)
 
-        o: Coordinate[Any] = other
-        return bool(self.coordinate == o.coordinate)
+        return bool(self.coordinate == other)
 
     def __repr__(self) -> str:
         return str(self.coordinate)

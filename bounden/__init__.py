@@ -7,6 +7,7 @@ For usage and support, see https://github.com/cariad/bounden.
 from importlib.resources import files
 
 from bounden.coordinates import (
+    Coordinate,
     FloatCoordinate,
     IntegerCoordinate,
     StringCoordinate,
@@ -27,6 +28,7 @@ def version() -> str:
 
 
 __all__ = [
+    "Coordinate",
     "FloatCoordinate",
     "IntegerCoordinate",
     "Point",
