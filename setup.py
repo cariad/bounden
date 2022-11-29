@@ -46,6 +46,7 @@ setup(
     name="bounden",
     packages=[
         "bounden",
+        "bounden.coordinates",
         "bounden.points",
         "bounden.regions",
         "bounden.vectors",
@@ -53,6 +54,7 @@ setup(
     ],
     package_data={
         "bounden": ["py.typed"],
+        "bounden.coordinates": ["py.typed"],
         "bounden.points": ["py.typed"],
         "bounden.regions": ["py.typed"],
         "bounden.vectors": ["py.typed"],
