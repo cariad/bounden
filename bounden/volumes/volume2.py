@@ -9,8 +9,17 @@ class Volume2(Volume[tuple[XLengthT, YLengthT]]):
     `width` and `height` describe the volume's width and height.
     """
 
-    def __init__(self, width: XLengthT, height: YLengthT) -> None:
-        super().__init__((width, height))
+    @classmethod
+    def new(
+        cls,
+        width: XLengthT,
+        height: YLengthT,
+    ) -> "Volume2[XLengthT, YLengthT]":
+        """
+        Creates a new `Volume2`.
+        """
+
+        return Volume2((width, height))
 
     @property
     def height(self) -> YLengthT:

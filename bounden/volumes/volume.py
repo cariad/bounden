@@ -30,7 +30,7 @@ class Volume(Generic[LengthsT]):
     def __repr__(self) -> str:
         return str(self._lengths)
 
-    def expand(self, distance: Length) -> "Volume[LengthsT]":
+    def expand(self: "VolumeT", distance: Length) -> "VolumeT":
         """
         Gets a copy of this volume expanded by `distance`.
 
@@ -39,7 +39,7 @@ class Volume(Generic[LengthsT]):
 
         ll: List[Length] = [length + distance for length in self]
         lengths = cast(LengthsT, tuple(ll))
-        return Volume[LengthsT](lengths)
+        return self.__class__(lengths)
 
     @property
     def lengths(self) -> LengthsT:

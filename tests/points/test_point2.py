@@ -7,7 +7,7 @@ PointType = Point2[StringCoordinate, IntegerCoordinate]
 
 @fixture
 def point() -> PointType:
-    return PointType(StringCoordinate("ZZ"), IntegerCoordinate(2))
+    return PointType.new(StringCoordinate("ZZ"), IntegerCoordinate(2))
 
 
 # pylint: disable-next=redefined-outer-name
