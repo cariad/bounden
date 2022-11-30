@@ -43,7 +43,7 @@ class Region2(Region[tuple[XAxisT, YAxisT], tuple[XLengthT, YLengthT]]):
         return self.volume.lengths[1]
 
     @property
-    def left(self) -> XAxisT:
+    def left(self) -> Coordinate[XAxisT]:
         """
         Left.
         """
@@ -66,7 +66,7 @@ class Region2(Region[tuple[XAxisT, YAxisT], tuple[XLengthT, YLengthT]]):
         return self.left + self.width
 
     @property
-    def top(self) -> YAxisT:
+    def top(self) -> Coordinate[YAxisT]:
         """
         Top.
         """

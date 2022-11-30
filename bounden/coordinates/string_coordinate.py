@@ -14,7 +14,7 @@ class StringCoordinate(Coordinate[str]):
     def __float__(self) -> float:
         return float(Base26C(self.coordinate))
 
-    def translate(self, distance: float) -> "Coordinate[str]":
+    def translate(self, distance: float) -> "StringCoordinate":
         """
         Gets a copy of this coordinate translated by the integer value of
         `distance`.
