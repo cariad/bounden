@@ -1,10 +1,10 @@
-from typing import Any, Type, TypeVar
+from typing import Any, Optional, Type, TypeVar
 
 from bounden.coordinates import Coordinate, XAxisT, YAxisT
 from bounden.points import Point2
+from bounden.protocols import RegionProtocol
 from bounden.regions import Region
-from bounden.volumes import Volume2
-from bounden.volumes.types import XLengthT, YLengthT
+from bounden.volumes import Volume2, XLengthT, YLengthT
 
 
 class Region2(Region[tuple[XAxisT, YAxisT], tuple[XLengthT, YLengthT]]):
@@ -19,12 +19,13 @@ class Region2(Region[tuple[XAxisT, YAxisT], tuple[XLengthT, YLengthT]]):
         y: YAxisT,
         width: XLengthT,
         height: YLengthT,
+        parent: Optional[RegionProtocol] = None,
     ) -> "Region2T":
         """
         Creates a new `Region2`.
         """
 
-        return cls(Point2.new(x, y), Volume2.new(width, height))
+        return cls(Point2.new(x, y), Volume2.new(width, height), parent=parent)
 
     @property
     def bottom(self) -> Coordinate[YAxisT]:
@@ -56,6 +57,19 @@ class Region2(Region[tuple[XAxisT, YAxisT], tuple[XLengthT, YLengthT]]):
         """
 
         return Point2.new(x, y, parent=self)
+
+    def region2(
+        self: "Region2T",
+        x: XAxisT,
+        y: YAxisT,
+        width: XLengthT,
+        height: YLengthT,
+    ) -> "Region2T":
+        """
+        Creates a child region.
+        """
+
+        return self.__class__.new(x, y, width, height, parent=self)
 
     @property
     def right(self) -> Coordinate[XAxisT]:
