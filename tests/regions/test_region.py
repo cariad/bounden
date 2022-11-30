@@ -13,27 +13,46 @@ from bounden import (
 )
 
 RegionType = Region[
-    Point[tuple[StringCoordinate, IntegerCoordinate]],
-    Volume[tuple[float, float]],
+    tuple[StringCoordinate, IntegerCoordinate],
+    tuple[float, float],
 ]
 
 
 @fixture
 def region() -> RegionType:
     return RegionType(
-        Point(
-            (
-                StringCoordinate("A"),
-                IntegerCoordinate(1),
-            )
+        (
+            StringCoordinate("A"),
+            IntegerCoordinate(1),
         ),
         Volume((3, 7)),
     )
 
 
+def test_absolute() -> None:
+    parent = Region((IntegerCoordinate(3), IntegerCoordinate(7)), (9, 9))
+
+    child = Region(
+        (IntegerCoordinate(9), IntegerCoordinate(13)),
+        (9, 9),
+        parent=parent,
+    )
+
+    expect = Region((IntegerCoordinate(12), IntegerCoordinate(20)), (9, 9))
+    assert child.absolute == expect
+
+
+# pylint: disable-next=redefined-outer-name
+def test_add__not_vector(region: RegionType) -> None:
+    with raises(ValueError) as ex:
+        _ = region + "foo"
+
+    assert str(ex.value) == "Cannot add 'foo' (str) to Region"
+
+
 def test_arg_count_mismatch() -> None:
     with raises(ValueError) as ex:
-        _ = Region[Point[tuple[IntegerCoordinate]], Volume[tuple[int, int]]](
+        _ = Region[tuple[IntegerCoordinate], tuple[int, int]](
             Point((IntegerCoordinate(0),)),
             Volume((1, 1)),
         )
@@ -146,6 +165,18 @@ def test_expand(
     expect: Region[Any, Any],
 ) -> None:
     assert r.expand(d) == expect
+
+
+# pylint: disable-next=redefined-outer-name
+def test_point(region: RegionType) -> None:
+    point = region.point((StringCoordinate("Z"), IntegerCoordinate(9)))
+    assert point == ("Z", 9)
+
+
+# pylint: disable-next=redefined-outer-name
+def test_point__absolute(region: RegionType) -> None:
+    point = region.point((StringCoordinate("Z"), IntegerCoordinate(9)))
+    assert point.absolute == ("AA", 10)
 
 
 # pylint: disable-next=redefined-outer-name

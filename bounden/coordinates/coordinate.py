@@ -21,6 +21,12 @@ class Coordinate(ABC, Generic[ValueT]):
             f"{other.__class__.__name__} ({repr(other)})"
         )
 
+    @abstractmethod
+    def __float__(self) -> float:
+        """
+        Override to return the float value of this coordinate.
+        """
+
     def __eq__(self, other: Any) -> bool:
         if isinstance(other, Coordinate):
             o: Coordinate[Any] = other

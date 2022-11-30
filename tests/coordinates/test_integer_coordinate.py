@@ -23,5 +23,9 @@ def test_eq__value() -> None:
     assert IntegerCoordinate(7) == 7
 
 
+def test_float() -> None:
+    assert float(IntegerCoordinate(7)) == 7
+
+
 def test_repr() -> None:
     assert repr(IntegerCoordinate(7)) == "7"

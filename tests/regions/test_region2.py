@@ -17,14 +17,6 @@ def test_bottom(region: Region2Type) -> None:
 
 
 # pylint: disable-next=redefined-outer-name
-def test_bottom_right(region: Region2Type) -> None:
-    assert region.bottom_right == (
-        StringCoordinate("AAG"),
-        IntegerCoordinate(11),
-    )
-
-
-# pylint: disable-next=redefined-outer-name
 def test_height(region: Region2Type) -> None:
     assert region.height == 9
 
@@ -35,13 +27,9 @@ def test_left(region: Region2Type) -> None:
 
 
 # pylint: disable-next=redefined-outer-name
-def test_position__x(region: Region2Type) -> None:
-    assert region.position.x == StringCoordinate("ZZ")
-
-
-# pylint: disable-next=redefined-outer-name
-def test_position__y(region: Region2Type) -> None:
-    assert region.position.y == IntegerCoordinate(2)
+def test_point2(region: Region2Type) -> None:
+    point = region.point2(StringCoordinate("C"), IntegerCoordinate(7))
+    assert point == ("C", 7)
 
 
 # pylint: disable-next=redefined-outer-name
@@ -52,16 +40,6 @@ def test_right(region: Region2Type) -> None:
 # pylint: disable-next=redefined-outer-name
 def test_top(region: Region2Type) -> None:
     assert region.top == IntegerCoordinate(2)
-
-
-# pylint: disable-next=redefined-outer-name
-def test_volume__height(region: Region2Type) -> None:
-    assert region.volume.height == 9
-
-
-# pylint: disable-next=redefined-outer-name
-def test_volume__width(region: Region2Type) -> None:
-    assert region.volume.width == 7
 
 
 # pylint: disable-next=redefined-outer-name

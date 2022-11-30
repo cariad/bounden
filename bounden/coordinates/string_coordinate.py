@@ -11,10 +11,13 @@ class StringCoordinate(Coordinate[str]):
     infinity.
     """
 
+    def __float__(self) -> float:
+        return float(Base26C(self.coordinate))
+
     def translate(self, distance: float) -> "Coordinate[str]":
         """
         Gets a copy of this coordinate translated by the integer value of
         `distance`.
         """
 
-        return StringCoordinate(str(Base26C(self.coordinate) + int(distance)))
+        return StringCoordinate(str(Base26C(self.coordinate) + distance))

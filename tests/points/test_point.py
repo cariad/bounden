@@ -1,6 +1,6 @@
 from pytest import fixture, raises
 
-from bounden import IntegerCoordinate, Point, StringCoordinate, Vector
+from bounden import IntegerCoordinate, Point, Region, StringCoordinate, Vector
 
 PointType = Point[tuple[StringCoordinate, IntegerCoordinate]]
 
@@ -8,6 +8,17 @@ PointType = Point[tuple[StringCoordinate, IntegerCoordinate]]
 @fixture
 def point() -> PointType:
     return PointType((StringCoordinate("Z"), IntegerCoordinate(2)))
+
+
+def test_absolute__no_parent() -> None:
+    p = Point((StringCoordinate("AC"), IntegerCoordinate(6)))
+    assert p.absolute == p
+
+
+def test_absolute__with_parent() -> None:
+    r = Region((StringCoordinate("AC"), IntegerCoordinate(6)), (100, 100))
+    p = Point((StringCoordinate("B"), IntegerCoordinate(2)), parent=r)
+    assert p.absolute == ("AE", 8)
 
 
 # pylint: disable-next=redefined-outer-name
