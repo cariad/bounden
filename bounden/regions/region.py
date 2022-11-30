@@ -21,7 +21,7 @@ class Region(RegionProtocol, Generic[AxesT]):
     def __init__(
         self,
         position: AxesT | Point[AxesT],
-        volume: Sequence[float | int | Percent] | Volume,
+        volume: Sequence[float | int | Percent],
         parent: Optional[RegionProtocol] = None,
     ) -> None:
         if len(position) != len(volume):
@@ -37,17 +37,17 @@ class Region(RegionProtocol, Generic[AxesT]):
         else:
             self._position = Point[AxesT](position)
 
-        if isinstance(volume, Volume):
-            self._volume = volume
-        else:
-            self._volume = Volume(*volume)
+        self._volume = Volume(
+            *volume,
+            parent=parent.volume if parent else None,
+        )
 
     def __add__(self: "RegionT", other: Any) -> "RegionT":
         if isinstance(other, Vector):
             vector: Vector[Any] = other
             region = self.__class__(
                 self.position + other,
-                self.volume,
+                tuple(self.volume),
                 parent=self._parent,
             )
             log.debug("Vector %s + region %s == %s", vector, self, region)
@@ -97,7 +97,7 @@ class Region(RegionProtocol, Generic[AxesT]):
 
         position = self.position - (distance / 2)
         volume = self.volume.expand(distance)
-        return self.__class__(position, volume)
+        return self.__class__(position, tuple(volume), parent=self._parent)
 
     def point(self, coordinates: AxesT) -> Point[AxesT]:
         """
@@ -117,7 +117,7 @@ class Region(RegionProtocol, Generic[AxesT]):
     def region(
         self: "RegionT",
         position: AxesT | Point[AxesT],
-        volume: Sequence[float | int | Percent] | Volume,
+        volume: Sequence[float | int | Percent],
     ) -> "RegionT":
         """
         Creates a child region.

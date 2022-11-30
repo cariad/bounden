@@ -4,7 +4,7 @@ from bounden.coordinates import Coordinate, XAxisT, YAxisT
 from bounden.points import Point2
 from bounden.protocols import RegionProtocol
 from bounden.regions import Region
-from bounden.volumes import Percent, Volume2
+from bounden.volumes import Percent
 
 
 class Region2(Region[tuple[XAxisT, YAxisT]]):
@@ -25,7 +25,7 @@ class Region2(Region[tuple[XAxisT, YAxisT]]):
         Creates a new `Region2`.
         """
 
-        return cls(Point2.new(x, y), Volume2.new(width, height), parent=parent)
+        return cls(Point2.new(x, y), (width, height), parent=parent)
 
     @property
     def bottom(self) -> Coordinate[YAxisT]:
