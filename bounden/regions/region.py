@@ -114,6 +114,17 @@ class Region(RegionProtocol, Generic[AxesT, LengthsT]):
 
         return self._position
 
+    def region(
+        self: "RegionT",
+        position: AxesT | Point[AxesT],
+        volume: LengthsT | Volume[LengthsT],
+    ) -> "RegionT":
+        """
+        Creates a child region.
+        """
+
+        return self.__class__(position, volume, parent=self)
+
     @property
     def volume(self) -> Volume[LengthsT]:
         """

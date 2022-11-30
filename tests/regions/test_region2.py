@@ -69,6 +69,21 @@ def test_point2(region: Region2Type) -> None:
 
 
 # pylint: disable-next=redefined-outer-name
+def test_region2(region: Region2Type) -> None:
+    nr = region.region2(StringCoordinate("B"), IntegerCoordinate(2), 10, 11)
+    assert nr.position == ("B", 2)
+    assert nr.volume == (10, 11)
+
+
+# pylint: disable-next=redefined-outer-name
+def test_region__absolute2(region: Region2Type) -> None:
+    nr = region.region2(StringCoordinate("B"), IntegerCoordinate(2), 10, 11)
+    na = nr.absolute
+    assert na.position == ("AAB", 4)
+    assert na.volume == (10, 11)
+
+
+# pylint: disable-next=redefined-outer-name
 def test_right(region: Region2Type) -> None:
     assert region.right == StringCoordinate("AAG")
 
