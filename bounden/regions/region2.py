@@ -1,3 +1,5 @@
+from typing import Any, Type, TypeVar
+
 from bounden.coordinates import Coordinate, XAxisT, YAxisT
 from bounden.points import Point2
 from bounden.regions import Region
@@ -8,25 +10,21 @@ from bounden.volumes.types import XLengthT, YLengthT
 class Region2(Region[tuple[XAxisT, YAxisT], tuple[XLengthT, YLengthT]]):
     """
     A region of two-dimensional space.
-
-    `x` and `y` describe the region's origin.
-
-    `width` and `height` describe the region's dimensions.
     """
 
     @classmethod
     def new(
-        cls,
+        cls: Type["Region2T"],
         x: XAxisT,
         y: YAxisT,
         width: XLengthT,
         height: YLengthT,
-    ) -> "Region2[XAxisT, YAxisT, XLengthT, YLengthT]":
+    ) -> "Region2T":
         """
         Creates a new `Region2`.
         """
 
-        return Region2(Point2.new(x, y), Volume2.new(width, height))
+        return cls(Point2.new(x, y), Volume2.new(width, height))
 
     @property
     def bottom(self) -> Coordinate[YAxisT]:
@@ -82,3 +80,6 @@ class Region2(Region[tuple[XAxisT, YAxisT], tuple[XLengthT, YLengthT]]):
         """
 
         return self.volume.lengths[0]
+
+
+Region2T = TypeVar("Region2T", bound=Region2[Any, Any, Any, Any])
