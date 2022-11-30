@@ -40,7 +40,7 @@ class Region(RegionProtocol, Generic[AxesT]):
         if isinstance(volume, Volume):
             self._volume = volume
         else:
-            self._volume = Volume(volume)
+            self._volume = Volume(*volume)
 
     def __add__(self: "RegionT", other: Any) -> "RegionT":
         if isinstance(other, Vector):

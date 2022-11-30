@@ -21,7 +21,7 @@ class Volume2(Volume):
         Creates a new `Volume2`.
         """
 
-        return cls((width, height), parent=parent)
+        return cls(width, height, parent=parent)
 
     @property
     def height(self) -> float | int:

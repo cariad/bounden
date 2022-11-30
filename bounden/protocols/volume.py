@@ -7,4 +7,6 @@ class VolumeProtocol(Protocol):
     """
 
     def absolute(self, dimension: int) -> float:
-        ...
+        """
+        Gets the absolute length of `dimension`.
+        """

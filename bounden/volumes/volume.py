@@ -1,4 +1,4 @@
-from typing import Any, Iterator, List, Optional, Sequence, TypeVar
+from typing import Any, Iterator, List, Optional, TypeVar
 
 from bounden.log import log
 from bounden.protocols import VolumeProtocol
@@ -14,7 +14,7 @@ class Volume(VolumeProtocol):
 
     def __init__(
         self,
-        lengths: Sequence[float | int | Percent],
+        *lengths: float | int | Percent,
         parent: Optional[VolumeProtocol] = None,
     ) -> None:
         self._lengths = lengths
@@ -47,7 +47,11 @@ class Volume(VolumeProtocol):
             return length
 
         if not self._parent:
-            raise ValueError("Cannot calculate dimension without parent")
+            raise ValueError(
+                f"{self.__class__.__name__} {repr(self)} cannot calculate "
+                f"relative length {repr(length)} at dimension {dimension} "
+                "without a parent volume"
+            )
 
         return length.calculate(self._parent.absolute(dimension))
 
@@ -67,7 +71,7 @@ class Volume(VolumeProtocol):
                 log.warning("Will not expand relative length")
                 ll.append(length)
 
-        return self.__class__(tuple(ll))
+        return self.__class__(*ll)
 
 
 VolumeT = TypeVar("VolumeT", bound=Volume)
