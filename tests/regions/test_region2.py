@@ -1,6 +1,12 @@
 from pytest import fixture
 
-from bounden import IntegerCoordinate, Region2, StringCoordinate, Vector2
+from bounden import (
+    IntegerCoordinate,
+    Percent,
+    Region2,
+    StringCoordinate,
+    Vector2,
+)
 
 Region2Type = Region2[StringCoordinate, IntegerCoordinate]
 
@@ -17,6 +23,17 @@ def require_region2(_: Region2Type) -> None:
 # pylint: disable-next=redefined-outer-name
 def test_add__type(region: Region2Type) -> None:
     require_region2(region + Vector2(1, 1))
+
+
+# pylint: disable-next=redefined-outer-name
+def test_absolute__from_subregion(region: Region2Type) -> None:
+    child = region.region2(
+        StringCoordinate("A"),
+        IntegerCoordinate(1),
+        Percent(1),
+        1,
+    )
+    assert child.width == 0.07
 
 
 # pylint: disable-next=redefined-outer-name

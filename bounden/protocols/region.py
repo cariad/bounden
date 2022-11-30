@@ -1,6 +1,7 @@
 from typing import Protocol
 
 from bounden.protocols.point import PointProtocol
+from bounden.protocols.volume import VolumeProtocol
 
 
 class RegionProtocol(Protocol):
@@ -18,4 +19,10 @@ class RegionProtocol(Protocol):
     def position(self) -> PointProtocol:
         """
         Position.
+        """
+
+    @property
+    def volume(self) -> VolumeProtocol:
+        """
+        Volume.
         """
