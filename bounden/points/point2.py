@@ -12,13 +12,18 @@ class Point2(Point[tuple[XAxisT, YAxisT]]):
     `x` and `y` are the x and y coordinates respectively.
     """
 
-    def __init__(
-        self,
+    @classmethod
+    def new(
+        cls,
         x: XAxisT,
         y: YAxisT,
         parent: Optional[RegionProtocol] = None,
-    ) -> None:
-        super().__init__((x, y), parent=parent)
+    ) -> "Point2[XAxisT, YAxisT]":
+        """
+        Creates a new `Point2`.
+        """
+
+        return Point2((x, y), parent=parent)
 
     @property
     def x(self) -> XAxisT:

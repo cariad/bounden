@@ -1,4 +1,4 @@
-from typing import Any, Generic, Optional, cast
+from typing import Any, Generic, Optional, TypeVar, cast
 
 from bounden.coordinates import AxesT
 from bounden.log import log
@@ -42,10 +42,10 @@ class Region(RegionProtocol, Generic[AxesT, LengthsT]):
         else:
             self._volume = Volume[LengthsT](volume)
 
-    def __add__(self, other: Any) -> "Region[AxesT, LengthsT]":
+    def __add__(self: "RegionT", other: Any) -> "RegionT":
         if isinstance(other, Vector):
             vector: Vector[Any] = other
-            region = Region[AxesT, LengthsT](
+            region = self.__class__(
                 self.position + other,
                 self.volume,
                 parent=self._parent,
@@ -69,7 +69,7 @@ class Region(RegionProtocol, Generic[AxesT, LengthsT]):
         return f"{self.position} x {self.volume}"
 
     @property
-    def absolute(self) -> "Region[AxesT, LengthsT]":
+    def absolute(self: "RegionT") -> "RegionT":
         """
         Copy of this region with absolute coordinates.
         """
@@ -88,7 +88,7 @@ class Region(RegionProtocol, Generic[AxesT, LengthsT]):
         cl = [self._position[i] + (l / 2) for i, l in enumerate(self.volume)]
         return self._position.__class__(cast(AxesT, tuple(cl)))
 
-    def expand(self, distance: Length) -> "Region[AxesT, LengthsT]":
+    def expand(self: "RegionT", distance: Length) -> "RegionT":
         """
         Gets a copy of this region expanded by `distance` about its centre.
 
@@ -121,3 +121,6 @@ class Region(RegionProtocol, Generic[AxesT, LengthsT]):
         """
 
         return self._volume
+
+
+RegionT = TypeVar("RegionT", bound=Region[Any, Any])

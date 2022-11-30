@@ -1,19 +1,37 @@
 from pytest import fixture
 
-from bounden import IntegerCoordinate, StringCoordinate
-from bounden.regions import Region2
+from bounden import IntegerCoordinate, Region2, StringCoordinate, Vector2
 
 Region2Type = Region2[StringCoordinate, IntegerCoordinate, int, int]
 
 
 @fixture
 def region() -> Region2Type:
-    return Region2(StringCoordinate("ZZ"), IntegerCoordinate(2), 7, 9)
+    return Region2.new(StringCoordinate("ZZ"), IntegerCoordinate(2), 7, 9)
+
+
+def require_region2(_: Region2Type) -> None:
+    pass
+
+
+# pylint: disable-next=redefined-outer-name
+def test_add__type(region: Region2Type) -> None:
+    require_region2(region + Vector2(1, 1))
+
+
+# pylint: disable-next=redefined-outer-name
+def test_absolute__type(region: Region2Type) -> None:
+    require_region2(region.absolute)
 
 
 # pylint: disable-next=redefined-outer-name
 def test_bottom(region: Region2Type) -> None:
     assert region.bottom == IntegerCoordinate(11)
+
+
+# pylint: disable-next=redefined-outer-name
+def test_expand__type(region: Region2Type) -> None:
+    require_region2(region.expand(1))
 
 
 # pylint: disable-next=redefined-outer-name

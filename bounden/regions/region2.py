@@ -14,14 +14,19 @@ class Region2(Region[tuple[XAxisT, YAxisT], tuple[XLengthT, YLengthT]]):
     `width` and `height` describe the region's dimensions.
     """
 
-    def __init__(
-        self,
+    @classmethod
+    def new(
+        cls,
         x: XAxisT,
         y: YAxisT,
         width: XLengthT,
         height: YLengthT,
-    ) -> None:
-        super().__init__(Point2(x, y), Volume2(width, height))
+    ) -> "Region2[XAxisT, YAxisT, XLengthT, YLengthT]":
+        """
+        Creates a new `Region2`.
+        """
+
+        return Region2(Point2.new(x, y), Volume2.new(width, height))
 
     @property
     def bottom(self) -> Coordinate[YAxisT]:
@@ -52,7 +57,7 @@ class Region2(Region[tuple[XAxisT, YAxisT], tuple[XLengthT, YLengthT]]):
         Creates a child point.
         """
 
-        return Point2(x, y, parent=self)
+        return Point2.new(x, y, parent=self)
 
     @property
     def right(self) -> Coordinate[XAxisT]:
