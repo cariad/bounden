@@ -9,7 +9,7 @@ class FloatCoordinate(Coordinate[float]):
     def __float__(self) -> float:
         return self.coordinate
 
-    def translate(self, distance: float) -> "Coordinate[float]":
+    def translate(self, distance: float) -> "FloatCoordinate":
         """
         Gets a copy of this coordinate translated by `distance`.
         """

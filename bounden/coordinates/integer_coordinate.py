@@ -9,7 +9,7 @@ class IntegerCoordinate(Coordinate[int]):
     def __float__(self) -> float:
         return float(self.coordinate)
 
-    def translate(self, distance: float) -> "Coordinate[int]":
+    def translate(self, distance: float) -> "IntegerCoordinate":
         """
         Gets a copy of this coordinate translated by the integer value of
         `distance`.
