@@ -1,3 +1,5 @@
+from typing import Any, Type, TypeVar
+
 from bounden.volumes.types import XLengthT, YLengthT
 from bounden.volumes.volume import Volume
 
@@ -5,21 +7,19 @@ from bounden.volumes.volume import Volume
 class Volume2(Volume[tuple[XLengthT, YLengthT]]):
     """
     A two-dimensional volume.
-
-    `width` and `height` describe the volume's width and height.
     """
 
     @classmethod
     def new(
-        cls,
+        cls: Type["Volume2T"],
         width: XLengthT,
         height: YLengthT,
-    ) -> "Volume2[XLengthT, YLengthT]":
+    ) -> "Volume2T":
         """
         Creates a new `Volume2`.
         """
 
-        return Volume2((width, height))
+        return cls((width, height))
 
     @property
     def height(self) -> YLengthT:
@@ -36,3 +36,6 @@ class Volume2(Volume[tuple[XLengthT, YLengthT]]):
         """
 
         return self.lengths[0]
+
+
+Volume2T = TypeVar("Volume2T", bound=Volume2[Any, Any])

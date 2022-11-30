@@ -44,6 +44,24 @@ def test_left(region: Region2Type) -> None:
     assert region.left == StringCoordinate("ZZ")
 
 
+def test_new__type() -> None:
+    class DerivedRegion2(
+        Region2[
+            StringCoordinate,
+            IntegerCoordinate,
+            int,
+            int,
+        ]
+    ):
+        pass
+
+    def require_derived(_: DerivedRegion2) -> None:
+        pass
+
+    r = DerivedRegion2.new(StringCoordinate("A"), IntegerCoordinate(1), 1, 1)
+    require_derived(r)
+
+
 # pylint: disable-next=redefined-outer-name
 def test_point2(region: Region2Type) -> None:
     point = region.point2(StringCoordinate("C"), IntegerCoordinate(7))

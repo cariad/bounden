@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Any, Optional, Type, TypeVar
 
 from bounden.coordinates.types import XAxisT, YAxisT
 from bounden.points.point import Point
@@ -8,22 +8,20 @@ from bounden.protocols import RegionProtocol
 class Point2(Point[tuple[XAxisT, YAxisT]]):
     """
     A point in two-dimensional space.
-
-    `x` and `y` are the x and y coordinates respectively.
     """
 
     @classmethod
     def new(
-        cls,
+        cls: Type["Point2T"],
         x: XAxisT,
         y: YAxisT,
         parent: Optional[RegionProtocol] = None,
-    ) -> "Point2[XAxisT, YAxisT]":
+    ) -> "Point2T":
         """
         Creates a new `Point2`.
         """
 
-        return Point2((x, y), parent=parent)
+        return cls((x, y), parent=parent)
 
     @property
     def x(self) -> XAxisT:
@@ -40,3 +38,6 @@ class Point2(Point[tuple[XAxisT, YAxisT]]):
         """
 
         return self.coordinates[1]
+
+
+Point2T = TypeVar("Point2T", bound=Point2[Any, Any])
