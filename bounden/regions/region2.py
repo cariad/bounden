@@ -4,10 +4,10 @@ from bounden.coordinates import Coordinate, XAxisT, YAxisT
 from bounden.points import Point2
 from bounden.protocols import RegionProtocol
 from bounden.regions import Region
-from bounden.volumes import Volume2, XLengthT, YLengthT
+from bounden.volumes import Percent, Volume2
 
 
-class Region2(Region[tuple[XAxisT, YAxisT], tuple[XLengthT, YLengthT]]):
+class Region2(Region[tuple[XAxisT, YAxisT]]):
     """
     A region of two-dimensional space.
     """
@@ -17,8 +17,8 @@ class Region2(Region[tuple[XAxisT, YAxisT], tuple[XLengthT, YLengthT]]):
         cls: Type["Region2T"],
         x: XAxisT,
         y: YAxisT,
-        width: XLengthT,
-        height: YLengthT,
+        width: float | int | Percent,
+        height: float | int | Percent,
         parent: Optional[RegionProtocol] = None,
     ) -> "Region2T":
         """
@@ -36,12 +36,12 @@ class Region2(Region[tuple[XAxisT, YAxisT], tuple[XLengthT, YLengthT]]):
         return self.top + self.height
 
     @property
-    def height(self) -> YLengthT:
+    def height(self) -> float | int:
         """
         Height.
         """
 
-        return self.volume.lengths[1]
+        return self.volume.absolute(1)
 
     @property
     def left(self) -> Coordinate[XAxisT]:
@@ -62,8 +62,8 @@ class Region2(Region[tuple[XAxisT, YAxisT], tuple[XLengthT, YLengthT]]):
         self: "Region2T",
         x: XAxisT,
         y: YAxisT,
-        width: XLengthT,
-        height: YLengthT,
+        width: float | int | Percent,
+        height: float | int | Percent,
     ) -> "Region2T":
         """
         Creates a child region.
@@ -88,12 +88,12 @@ class Region2(Region[tuple[XAxisT, YAxisT], tuple[XLengthT, YLengthT]]):
         return self.y
 
     @property
-    def width(self) -> XLengthT:
+    def width(self) -> float | int:
         """
         Width.
         """
 
-        return self.volume.lengths[0]
+        return self.volume.absolute(0)
 
     @property
     def x(self) -> Coordinate[XAxisT]:
@@ -112,4 +112,4 @@ class Region2(Region[tuple[XAxisT, YAxisT], tuple[XLengthT, YLengthT]]):
         return self.position.coordinates[1]
 
 
-Region2T = TypeVar("Region2T", bound=Region2[Any, Any, Any, Any])
+Region2T = TypeVar("Region2T", bound=Region2[Any, Any])

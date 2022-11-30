@@ -2,7 +2,7 @@ from pytest import fixture
 
 from bounden import IntegerCoordinate, Region2, StringCoordinate, Vector2
 
-Region2Type = Region2[StringCoordinate, IntegerCoordinate, int, int]
+Region2Type = Region2[StringCoordinate, IntegerCoordinate]
 
 
 @fixture
@@ -45,14 +45,7 @@ def test_left(region: Region2Type) -> None:
 
 
 def test_new__type() -> None:
-    class DerivedRegion2(
-        Region2[
-            StringCoordinate,
-            IntegerCoordinate,
-            int,
-            int,
-        ]
-    ):
+    class DerivedRegion2(Region2[StringCoordinate, IntegerCoordinate]):
         pass
 
     def require_derived(_: DerivedRegion2) -> None:

@@ -1,28 +1,34 @@
-from typing import Any, Generic, Iterator, List, TypeVar, cast
+from typing import Any, Iterator, List, Optional, Sequence, TypeVar
 
-from bounden.volumes.types import Length, LengthsT
+from bounden.log import log
+from bounden.protocols import VolumeProtocol
+from bounden.volumes.percent import Percent
 
 
-class Volume(Generic[LengthsT]):
+class Volume(VolumeProtocol):
     """
     An n-dimensional volume.
 
     `lengths` describes the length of each dimension.
     """
 
-    def __init__(self, lengths: LengthsT) -> None:
+    def __init__(
+        self,
+        lengths: Sequence[float | int | Percent],
+        parent: Optional[VolumeProtocol] = None,
+    ) -> None:
         self._lengths = lengths
+        self._parent = parent
 
     def __eq__(self, other: Any) -> bool:
         if isinstance(other, Volume):
-            o: Volume[Any] = other
-            return bool(self.lengths == o.lengths)
+            return bool(list(self) == list(other))
 
-        return bool(self.lengths == other)
+        return bool(self._lengths == other)
 
-    def __iter__(self) -> Iterator[Length]:
-        for length in self._lengths:
-            yield length
+    def __iter__(self) -> Iterator[float | int]:
+        for dimension in range(len(self._lengths)):
+            yield self.absolute(dimension)
 
     def __len__(self) -> int:
         return len(self._lengths)
@@ -30,24 +36,38 @@ class Volume(Generic[LengthsT]):
     def __repr__(self) -> str:
         return str(self._lengths)
 
-    def expand(self: "VolumeT", distance: Length) -> "VolumeT":
+    def absolute(self, dimension: int) -> float | int:
+        """
+        Gets the absolute length of `dimension`.
+        """
+
+        length = self._lengths[dimension]
+
+        if isinstance(length, (float, int)):
+            return length
+
+        if not self._parent:
+            raise ValueError("Cannot calculate dimension without parent")
+
+        return length.calculate(self._parent.absolute(dimension))
+
+    def expand(self: "VolumeT", distance: float | int) -> "VolumeT":
         """
         Gets a copy of this volume expanded by `distance`.
 
         Pass a negative distance to contract.
         """
 
-        ll: List[Length] = [length + distance for length in self]
-        lengths = cast(LengthsT, tuple(ll))
-        return self.__class__(lengths)
+        ll: List[float | int | Percent] = []
 
-    @property
-    def lengths(self) -> LengthsT:
-        """
-        Dimension lengths.
-        """
+        for length in self._lengths:
+            if isinstance(length, (float, int)):
+                ll.append(length + distance)
+            else:
+                log.warning("Will not expand relative length")
+                ll.append(length)
 
-        return self._lengths
+        return self.__class__(tuple(ll))
 
 
-VolumeT = TypeVar("VolumeT", bound=Volume[Any])
+VolumeT = TypeVar("VolumeT", bound=Volume)

@@ -1,8 +1,8 @@
-from typing import Any
+from typing import Sequence
 
 from pytest import mark
 
-from bounden import Length, Lengths, Volume
+from bounden import Volume
 
 
 @mark.parametrize(
@@ -16,7 +16,7 @@ from bounden import Length, Lengths, Volume
         (Volume((1, 2, 3)), 4, (5, 6, 7)),
     ],
 )
-def test_expand(v: Volume[Any], d: Length, expect: Lengths) -> None:
+def test_expand(v: Volume, d: float, expect: Sequence[float | int]) -> None:
     assert v.expand(d) == expect
 
 

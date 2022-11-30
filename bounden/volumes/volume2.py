@@ -1,10 +1,11 @@
-from typing import Any, Type, TypeVar
+from typing import Optional, Type, TypeVar
 
-from bounden.volumes.types import XLengthT, YLengthT
+from bounden.protocols import VolumeProtocol
+from bounden.volumes.percent import Percent
 from bounden.volumes.volume import Volume
 
 
-class Volume2(Volume[tuple[XLengthT, YLengthT]]):
+class Volume2(Volume):
     """
     A two-dimensional volume.
     """
@@ -12,30 +13,31 @@ class Volume2(Volume[tuple[XLengthT, YLengthT]]):
     @classmethod
     def new(
         cls: Type["Volume2T"],
-        width: XLengthT,
-        height: YLengthT,
+        width: float | int | Percent,
+        height: float | int | Percent,
+        parent: Optional[VolumeProtocol] = None,
     ) -> "Volume2T":
         """
         Creates a new `Volume2`.
         """
 
-        return cls((width, height))
+        return cls((width, height), parent=parent)
 
     @property
-    def height(self) -> YLengthT:
+    def height(self) -> float | int:
         """
         Height.
         """
 
-        return self.lengths[1]
+        return self.absolute(1)
 
     @property
-    def width(self) -> XLengthT:
+    def width(self) -> float | int:
         """
         Width.
         """
 
-        return self.lengths[0]
+        return self.absolute(0)
 
 
-Volume2T = TypeVar("Volume2T", bound=Volume2[Any, Any])
+Volume2T = TypeVar("Volume2T", bound=Volume2)

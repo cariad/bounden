@@ -5,17 +5,13 @@ from pytest import fixture, mark, raises
 from bounden import (
     FloatCoordinate,
     IntegerCoordinate,
-    Length,
     Point,
     Region,
     StringCoordinate,
     Volume,
 )
 
-RegionType = Region[
-    tuple[StringCoordinate, IntegerCoordinate],
-    tuple[float, float],
-]
+RegionType = Region[tuple[StringCoordinate, IntegerCoordinate]]
 
 
 @fixture
@@ -52,7 +48,7 @@ def test_add__not_vector(region: RegionType) -> None:
 
 def test_arg_count_mismatch() -> None:
     with raises(ValueError) as ex:
-        _ = Region[tuple[IntegerCoordinate], tuple[int, int]](
+        _ = Region[tuple[IntegerCoordinate]](
             Point((IntegerCoordinate(0),)),
             Volume((1, 1)),
         )
@@ -108,7 +104,7 @@ def test_arg_count_mismatch() -> None:
         ),
     ],
 )
-def test_center(r: Region[Any, Any], expect: Point[Any]) -> None:
+def test_center(r: Region[Any], expect: Point[Any]) -> None:
     assert r.center == expect
 
 
@@ -159,11 +155,7 @@ def test_eq__not() -> None:
         ),
     ],
 )
-def test_expand(
-    r: Region[Any, Any],
-    d: Length,
-    expect: Region[Any, Any],
-) -> None:
+def test_expand(r: Region[Any], d: float, expect: Region[Any]) -> None:
     assert r.expand(d) == expect
 
 
@@ -213,4 +205,4 @@ def test_repr() -> None:
 
 # pylint: disable-next=redefined-outer-name
 def test_size(region: RegionType) -> None:
-    assert region.volume.lengths == (3, 7)
+    assert region.volume == (3, 7)

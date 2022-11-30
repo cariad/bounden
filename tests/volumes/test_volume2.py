@@ -1,31 +1,20 @@
-from pytest import fixture
-
-from bounden import Volume2
-
-Volume2Type = Volume2[int, int]
+from bounden import Percent, Volume2
 
 
-def require_volume2(_: Volume2Type) -> None:
+def require_volume2(_: Volume2) -> None:
     pass
 
 
-@fixture
-def volume2() -> Volume2Type:
-    return Volume2Type.new(3, 7)
+def test_expand__type() -> None:
+    require_volume2(Volume2.new(3, 7).expand(1))
 
 
-# pylint: disable-next=redefined-outer-name
-def test_expand__type(volume2: Volume2Type) -> None:
-    require_volume2(volume2.expand(1))
-
-
-# pylint: disable-next=redefined-outer-name
-def test_height(volume2: Volume2Type) -> None:
-    assert volume2.height == 7
+def test_height() -> None:
+    assert Volume2.new(3, 7).height == 7
 
 
 def test_new__type() -> None:
-    class DerivedVolume2(Volume2[int, int]):
+    class DerivedVolume2(Volume2):
         pass
 
     def require_derived(_: DerivedVolume2) -> None:
@@ -35,6 +24,17 @@ def test_new__type() -> None:
     require_derived(v)
 
 
-# pylint: disable-next=redefined-outer-name
-def test_width(volume2: Volume2Type) -> None:
-    assert volume2.width == 3
+def test_percent() -> None:
+    parent = Volume2.new(200, 200)
+    child = Volume2.new(Percent(50), 75, parent=parent)
+    assert child == (Percent(50), 75)
+
+
+def test_percent__absolute() -> None:
+    parent = Volume2.new(200, 200)
+    child = Volume2.new(Percent(50), 75, parent=parent)
+    assert child.width == 100
+
+
+def test_width() -> None:
+    assert Volume2.new(3, 7).width == 3
