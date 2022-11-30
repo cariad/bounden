@@ -15,7 +15,7 @@ from bounden.coordinates import (
 from bounden.points import Point, Point2
 from bounden.regions import Region, Region2
 from bounden.vectors import Vector, Vector2
-from bounden.volumes import Length, Lengths, Volume, Volume2
+from bounden.volumes import Percent, Volume, Volume2
 
 
 def version() -> str:
@@ -31,8 +31,7 @@ __all__ = [
     "Coordinate",
     "FloatCoordinate",
     "IntegerCoordinate",
-    "Length",
-    "Lengths",
+    "Percent",
     "Point",
     "Point2",
     "Region",

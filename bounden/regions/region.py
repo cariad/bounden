@@ -1,14 +1,14 @@
-from typing import Any, Generic, Optional, TypeVar, cast
+from typing import Any, Generic, Optional, Sequence, TypeVar, cast
 
 from bounden.coordinates import AxesT
 from bounden.log import log
 from bounden.points import Point
 from bounden.protocols import RegionProtocol
 from bounden.vectors import Vector
-from bounden.volumes import Length, LengthsT, Volume
+from bounden.volumes import Percent, Volume
 
 
-class Region(RegionProtocol, Generic[AxesT, LengthsT]):
+class Region(RegionProtocol, Generic[AxesT]):
     """
     A region of n-dimensional space.
 
@@ -21,7 +21,7 @@ class Region(RegionProtocol, Generic[AxesT, LengthsT]):
     def __init__(
         self,
         position: AxesT | Point[AxesT],
-        volume: LengthsT | Volume[LengthsT],
+        volume: Sequence[float | int | Percent] | Volume,
         parent: Optional[RegionProtocol] = None,
     ) -> None:
         if len(position) != len(volume):
@@ -40,7 +40,7 @@ class Region(RegionProtocol, Generic[AxesT, LengthsT]):
         if isinstance(volume, Volume):
             self._volume = volume
         else:
-            self._volume = Volume[LengthsT](volume)
+            self._volume = Volume(*volume)
 
     def __add__(self: "RegionT", other: Any) -> "RegionT":
         if isinstance(other, Vector):
@@ -60,7 +60,7 @@ class Region(RegionProtocol, Generic[AxesT, LengthsT]):
 
     def __eq__(self, other: Any) -> bool:
         if isinstance(other, Region):
-            o: Region[Any, Any] = other
+            o: Region[Any] = other
             return self.position == o.position and self.volume == o.volume
 
         return False
@@ -88,7 +88,7 @@ class Region(RegionProtocol, Generic[AxesT, LengthsT]):
         cl = [self._position[i] + (l / 2) for i, l in enumerate(self.volume)]
         return self._position.__class__(cast(AxesT, tuple(cl)))
 
-    def expand(self: "RegionT", distance: Length) -> "RegionT":
+    def expand(self: "RegionT", distance: float) -> "RegionT":
         """
         Gets a copy of this region expanded by `distance` about its centre.
 
@@ -117,7 +117,7 @@ class Region(RegionProtocol, Generic[AxesT, LengthsT]):
     def region(
         self: "RegionT",
         position: AxesT | Point[AxesT],
-        volume: LengthsT | Volume[LengthsT],
+        volume: Sequence[float | int | Percent] | Volume,
     ) -> "RegionT":
         """
         Creates a child region.
@@ -126,7 +126,7 @@ class Region(RegionProtocol, Generic[AxesT, LengthsT]):
         return self.__class__(position, volume, parent=self)
 
     @property
-    def volume(self) -> Volume[LengthsT]:
+    def volume(self) -> Volume:
         """
         Volume.
         """
@@ -134,4 +134,4 @@ class Region(RegionProtocol, Generic[AxesT, LengthsT]):
         return self._volume
 
 
-RegionT = TypeVar("RegionT", bound=Region[Any, Any])
+RegionT = TypeVar("RegionT", bound=Region[Any])
