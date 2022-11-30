@@ -27,6 +27,12 @@ def test_left(region: Region2Type) -> None:
 
 
 # pylint: disable-next=redefined-outer-name
+def test_point2(region: Region2Type) -> None:
+    point = region.point2(StringCoordinate("C"), IntegerCoordinate(7))
+    assert point == ("C", 7)
+
+
+# pylint: disable-next=redefined-outer-name
 def test_right(region: Region2Type) -> None:
     assert region.right == StringCoordinate("AAG")
 

@@ -20,7 +20,14 @@ class Vector(VectorProtocol, Generic[LengthsT]):
         self._lengths = lengths
 
     def __bool__(self) -> bool:
-        return self._lengths is not None
+        if self._lengths is None:
+            return False
+
+        for length in self._lengths:
+            if length != 0:
+                return True
+
+        return False
 
     def __getitem__(self, index: int) -> float:
         if self._lengths is None:
@@ -30,12 +37,5 @@ class Vector(VectorProtocol, Generic[LengthsT]):
     def __len__(self) -> int:
         return 0 if self._lengths is None else len(self._lengths)
 
-    @property
-    def lengths(self) -> Optional[LengthsT]:
-        """
-        Length of the vector in each dimension.
-
-        The index indicates the dimension and the value describes the length.
-        """
-
-        return self._lengths
+    def __repr__(self) -> str:
+        return str(self._lengths) if self._lengths else "<zero>"

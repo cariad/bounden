@@ -1,6 +1,7 @@
 from typing import Any, Generic, Optional, cast
 
 from bounden.coordinates import AxesT
+from bounden.log import log
 from bounden.points import Point
 from bounden.protocols import RegionProtocol
 from bounden.vectors import Vector
@@ -43,12 +44,14 @@ class Region(RegionProtocol, Generic[AxesT, LengthsT]):
 
     def __add__(self, other: Any) -> "Region[AxesT, LengthsT]":
         if isinstance(other, Vector):
-            v: Vector[Any] = other
-            return Region[AxesT, LengthsT](
-                self.position + v,
+            vector: Vector[Any] = other
+            region = Region[AxesT, LengthsT](
+                self.position + other,
                 self.volume,
                 parent=self._parent,
             )
+            log.debug("Vector %s + region %s == %s", vector, self, region)
+            return region
 
         raise ValueError(
             f"Cannot add {repr(other)} ({other.__class__.__name__}) to "
@@ -58,15 +61,12 @@ class Region(RegionProtocol, Generic[AxesT, LengthsT]):
     def __eq__(self, other: Any) -> bool:
         if isinstance(other, Region):
             o: Region[Any, Any] = other
-            return bool(
-                self.absolute.position == o.absolute.position
-                and self.volume == o.volume
-            )
+            return self.position == o.position and self.volume == o.volume
 
         return False
 
     def __repr__(self) -> str:
-        return f"{self.absolute.position} x {self.volume}"
+        return f"{self.position} x {self.volume}"
 
     @property
     def absolute(self) -> "Region[AxesT, LengthsT]":
