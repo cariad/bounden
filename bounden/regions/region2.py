@@ -49,7 +49,7 @@ class Region2(Region[tuple[XAxisT, YAxisT], tuple[XLengthT, YLengthT]]):
         Left.
         """
 
-        return self.position.coordinates[0]
+        return self.x
 
     def point2(self, x: XAxisT, y: YAxisT) -> Point2[XAxisT, YAxisT]:
         """
@@ -85,7 +85,7 @@ class Region2(Region[tuple[XAxisT, YAxisT], tuple[XLengthT, YLengthT]]):
         Top.
         """
 
-        return self.position.coordinates[1]
+        return self.y
 
     @property
     def width(self) -> XLengthT:
@@ -94,6 +94,22 @@ class Region2(Region[tuple[XAxisT, YAxisT], tuple[XLengthT, YLengthT]]):
         """
 
         return self.volume.lengths[0]
+
+    @property
+    def x(self) -> Coordinate[XAxisT]:
+        """
+        X coordinate.
+        """
+
+        return self.position.coordinates[0]
+
+    @property
+    def y(self) -> Coordinate[YAxisT]:
+        """
+        Y coordinate.
+        """
+
+        return self.position.coordinates[1]
 
 
 Region2T = TypeVar("Region2T", bound=Region2[Any, Any, Any, Any])

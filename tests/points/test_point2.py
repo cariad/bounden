@@ -22,6 +22,16 @@ def test_new__type() -> None:
 
 
 # pylint: disable-next=redefined-outer-name
+def test_left(point: PointType) -> None:
+    assert point.left == StringCoordinate("ZZ")
+
+
+# pylint: disable-next=redefined-outer-name
+def test_top(point: PointType) -> None:
+    assert point.top == IntegerCoordinate(2)
+
+
+# pylint: disable-next=redefined-outer-name
 def test_x(point: PointType) -> None:
     assert point.x == StringCoordinate("ZZ")
 
