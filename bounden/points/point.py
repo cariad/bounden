@@ -19,6 +19,10 @@ class Point(PointProtocol, Generic[AxesT]):
         self._parent = parent
 
     def __add__(self, other: Any) -> "Point[AxesT]":
+        if isinstance(other, tuple):
+            vt = [float(v) for v in other]
+            other = Vector(vt)
+
         if isinstance(other, Vector):
             v: Vector[Any] = other
 

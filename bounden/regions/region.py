@@ -43,6 +43,10 @@ class Region(RegionProtocol, Generic[AxesT]):
         )
 
     def __add__(self: "RegionT", other: Any) -> "RegionT":
+        if isinstance(other, tuple):
+            vt = [float(v) for v in other]
+            other = Vector(vt)
+
         if isinstance(other, Vector):
             vector: Vector[Any] = other
             region = self.__class__(

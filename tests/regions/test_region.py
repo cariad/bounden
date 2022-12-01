@@ -45,6 +45,17 @@ def test_add__not_vector(region: RegionType) -> None:
     assert str(ex.value) == "Cannot add 'foo' (str) to Region"
 
 
+# pylint: disable-next=redefined-outer-name
+def test_add__tuple(region: RegionType) -> None:
+    assert region + (2, 3) == RegionType(
+        (
+            StringCoordinate("C"),
+            IntegerCoordinate(4),
+        ),
+        (3, 7),
+    )
+
+
 def test_arg_count_mismatch() -> None:
     with raises(ValueError) as ex:
         _ = Region[tuple[IntegerCoordinate]](
