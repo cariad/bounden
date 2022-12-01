@@ -25,7 +25,7 @@ class Region2(Region[tuple[XAxisT, YAxisT]]):
         Creates a new `Region2`.
         """
 
-        return cls(Point2.new(x, y), (width, height), parent=parent)
+        return cls((x, y), (width, height), parent=parent)
 
     @property
     def bottom(self) -> Coordinate[YAxisT]:

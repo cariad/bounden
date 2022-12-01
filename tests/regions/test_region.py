@@ -58,10 +58,7 @@ def test_add__tuple(region: RegionType) -> None:
 
 def test_arg_count_mismatch() -> None:
     with raises(ValueError) as ex:
-        _ = Region[tuple[IntegerCoordinate]](
-            Point((IntegerCoordinate(0),)),
-            (1, 1),
-        )
+        _ = Region[tuple[IntegerCoordinate]]((IntegerCoordinate(0),), (1, 1))
     assert str(ex.value) == "Coordinates count (1) != lengths count (2)"
 
 
@@ -69,44 +66,36 @@ def test_arg_count_mismatch() -> None:
     "r, expect",
     [
         (
-            Region(Point((IntegerCoordinate(2),)), (6,)),
+            Region((IntegerCoordinate(2),), (6,)),
             Point((IntegerCoordinate(5),)),
         ),
         (
-            Region(Point((StringCoordinate("Y"),)), (4,)),
+            Region((StringCoordinate("Y"),), (4,)),
             Point((StringCoordinate("AA"),)),
         ),
         (
-            Region(Point((IntegerCoordinate(2),)), (7,)),
+            Region((IntegerCoordinate(2),), (7,)),
             # As an IntegerCoordinate, this is intentionally 5 rather than 5.5:
             Point((IntegerCoordinate(5),)),
         ),
         (
-            Region(Point((FloatCoordinate(2),)), (7,)),
+            Region((FloatCoordinate(2),), (7,)),
             Point((FloatCoordinate(5.5),)),
         ),
         (
-            Region(
-                Point((StringCoordinate("Z"), IntegerCoordinate(1))),
-                (4, 5),
-            ),
+            Region((StringCoordinate("Z"), IntegerCoordinate(1)), (4, 5)),
             ("AB", 3),
         ),
         (
-            Region(
-                Point((FloatCoordinate(2), FloatCoordinate(3))),
-                (7, 9),
-            ),
+            Region((FloatCoordinate(2), FloatCoordinate(3)), (7, 9)),
             (5.5, 7.5),
         ),
         (
             Region(
-                Point(
-                    (
-                        FloatCoordinate(2),
-                        FloatCoordinate(3),
-                        FloatCoordinate(4),
-                    )
+                (
+                    FloatCoordinate(2),
+                    FloatCoordinate(3),
+                    FloatCoordinate(4),
                 ),
                 (11, 12, 13),
             ),
@@ -119,49 +108,37 @@ def test_center(r: Region[Any], expect: Point[Any]) -> None:
 
 
 def test_eq__not() -> None:
-    assert Region(Point((FloatCoordinate(2),)), (6,)) != "foo"
+    assert Region((FloatCoordinate(2),), (6,)) != "foo"
 
 
 @mark.parametrize(
     "r, d, expect",
     [
         (
-            Region(Point((FloatCoordinate(2),)), (6,)),
+            Region((FloatCoordinate(2),), (6,)),
             1,
-            Region(Point((FloatCoordinate(1.5),)), (7,)),
+            Region((FloatCoordinate(1.5),), (7,)),
         ),
         (
-            Region(Point((IntegerCoordinate(2),)), (6,)),
+            Region((IntegerCoordinate(2),), (6,)),
             1,
             # As an IntegerCoordinate, this is intentionally 2 rather than 1.5:
-            Region(Point((IntegerCoordinate(2),)), (7,)),
+            Region((IntegerCoordinate(2),), (7,)),
         ),
         (
-            Region(Point((FloatCoordinate(2),)), (6,)),
+            Region((FloatCoordinate(2),), (6,)),
             -1,
-            Region(Point((FloatCoordinate(2.5),)), (5,)),
+            Region((FloatCoordinate(2.5),), (5,)),
         ),
         (
-            Region(
-                Point((FloatCoordinate(2), FloatCoordinate(3))),
-                (6, 7),
-            ),
+            Region((FloatCoordinate(2), FloatCoordinate(3)), (6, 7)),
             -4,
-            Region(
-                Point((FloatCoordinate(4), FloatCoordinate(5))),
-                (2, 3),
-            ),
+            Region((FloatCoordinate(4), FloatCoordinate(5)), (2, 3)),
         ),
         (
-            Region(
-                Point((FloatCoordinate(2), FloatCoordinate(3))),
-                (6, 7),
-            ),
+            Region((FloatCoordinate(2), FloatCoordinate(3)), (6, 7)),
             8,
-            Region(
-                Point((FloatCoordinate(-2), FloatCoordinate(-1))),
-                (14, 15),
-            ),
+            Region((FloatCoordinate(-2), FloatCoordinate(-1)), (14, 15)),
         ),
     ],
 )
@@ -205,10 +182,7 @@ def test_region__absolute(region: RegionType) -> None:
 
 
 def test_repr() -> None:
-    r = Region(
-        Point((FloatCoordinate(2.1), FloatCoordinate(2.2))),
-        (6.4, 6.5),
-    )
+    r = Region((FloatCoordinate(2.1), FloatCoordinate(2.2)), (6.4, 6.5))
 
     assert repr(r) == "(2.1, 2.2) x (6.4, 6.5)"
 

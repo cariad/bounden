@@ -20,7 +20,7 @@ class Region(RegionProtocol, Generic[AxesT]):
 
     def __init__(
         self,
-        position: AxesT | Point[AxesT],
+        position: AxesT,
         volume: Sequence[float | int | Percent],
         parent: Optional[RegionProtocol] = None,
     ) -> None:
@@ -32,10 +32,7 @@ class Region(RegionProtocol, Generic[AxesT]):
 
         self._parent = parent
 
-        if isinstance(position, Point):
-            self._position = position
-        else:
-            self._position = Point[AxesT](position)
+        self._position = Point[AxesT](position, parent=self)
 
         self._volume = Volume(
             *volume,
@@ -50,7 +47,7 @@ class Region(RegionProtocol, Generic[AxesT]):
         if isinstance(other, Vector):
             vector: Vector[Any] = other
             region = self.__class__(
-                self.position + other,
+                tuple(self.position + other),
                 tuple(self.volume),
                 parent=self._parent,
             )
@@ -120,7 +117,7 @@ class Region(RegionProtocol, Generic[AxesT]):
 
     def region(
         self: "RegionT",
-        position: AxesT | Point[AxesT],
+        position: AxesT,
         volume: Sequence[float | int | Percent],
     ) -> "RegionT":
         """
