@@ -1,4 +1,4 @@
-from typing import Any, Generic, Optional, TypeVar, cast,Iterator
+from typing import Any, Generic, Iterator, Optional, TypeVar, cast
 
 from bounden.coordinates import AxesT, Coordinate
 from bounden.protocols import PointProtocol, RegionProtocol
