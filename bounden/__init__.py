@@ -12,6 +12,7 @@ from bounden.coordinates import (
     IntegerCoordinate,
     StringCoordinate,
 )
+from bounden.enums import Alignment
 from bounden.points import Point, Point2
 from bounden.regions import Region, Region2
 from bounden.vectors import Vector, Vector2
@@ -28,6 +29,7 @@ def version() -> str:
 
 
 __all__ = [
+    "Alignment",
     "Coordinate",
     "FloatCoordinate",
     "IntegerCoordinate",
