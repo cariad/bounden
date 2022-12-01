@@ -1,5 +1,9 @@
-from bounden.coordinates import StringCoordinate
+from bounden import Alignment, StringCoordinate
 
 
-def test_float() -> None:
-    assert float(StringCoordinate("AA")) == 27
+def test_repr__alignment() -> None:
+    assert repr(StringCoordinate(Alignment.Near)) == "Near"
+
+
+def test_value() -> None:
+    assert StringCoordinate("AA").value == "AA"
