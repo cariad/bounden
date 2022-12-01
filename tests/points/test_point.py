@@ -46,6 +46,12 @@ def test_add__not_vector(point: PointType) -> None:
 
 
 # pylint: disable-next=redefined-outer-name
+def test_add__tuple(point: PointType) -> None:
+    actual = point + (3, 4)
+    assert actual.coordinates == (StringCoordinate("AC"), IntegerCoordinate(6))
+
+
+# pylint: disable-next=redefined-outer-name
 def test_coordinates(point: PointType) -> None:
     assert point.coordinates == (StringCoordinate("Z"), IntegerCoordinate(2))
 
