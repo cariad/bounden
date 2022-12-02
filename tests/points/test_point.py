@@ -1,66 +1,41 @@
-from pytest import fixture, raises
+from pytest import raises
 
-from bounden import IntegerCoordinate, Point, Region, StringCoordinate, Vector
-
-PointType = Point[tuple[StringCoordinate, IntegerCoordinate]]
+from bounden import Point
 
 
-@fixture
-def point() -> PointType:
-    return PointType((StringCoordinate("Z"), IntegerCoordinate(2)))
+def test_add__int() -> None:
+    assert Point(("Z", 2)) + 3 == ("AC", 5)
 
 
-def test_absolute__no_parent() -> None:
-    p = Point((StringCoordinate("AC"), IntegerCoordinate(6)))
-    assert p.absolute == p
+def test_add__unsupported() -> None:
+    point = Point(("Z", 2))
 
-
-def test_absolute__with_parent() -> None:
-    r = Region((StringCoordinate("AC"), IntegerCoordinate(6)), (100, 100))
-    p = Point((StringCoordinate("B"), IntegerCoordinate(2)), parent=r)
-    assert p.absolute == ("AE", 8)
-
-
-# pylint: disable-next=redefined-outer-name
-def test_add(point: PointType) -> None:
-    vector = Vector((3, 4))
-    actual = point + vector
-    assert actual.coordinates == (StringCoordinate("AC"), IntegerCoordinate(6))
-
-
-# pylint: disable-next=redefined-outer-name
-def test_add__dimension_mismatch(point: PointType) -> None:
-    with raises(ValueError) as ex:
-        _ = point + Vector((0, 3, 4))
-
-    expect = "Vector force count (3) != point dimension count (2)"
-    assert str(ex.value) == expect
-
-
-# pylint: disable-next=redefined-outer-name
-def test_add__not_vector(point: PointType) -> None:
     with raises(ValueError) as ex:
         _ = point + "foo"
 
-    assert str(ex.value) == "Cannot add 'foo' (str) to Point"
+    assert str(ex.value) == "'foo' (<class 'str'>) is not a vector"
 
 
-# pylint: disable-next=redefined-outer-name
-def test_add__tuple(point: PointType) -> None:
+def test_add__tuple() -> None:
+    point = Point(("Z", 2))
     actual = point + (3, 4)
-    assert actual.coordinates == (StringCoordinate("AC"), IntegerCoordinate(6))
+    assert actual.coordinates == ("AC", 6)
 
 
-# pylint: disable-next=redefined-outer-name
-def test_coordinates(point: PointType) -> None:
-    assert point.coordinates == (StringCoordinate("Z"), IntegerCoordinate(2))
+def test_coordinates() -> None:
+    point = Point(("Z", 2))
+    assert point.coordinates == ("Z", 2)
 
 
-# pylint: disable-next=redefined-outer-name
-def test_len(point: PointType) -> None:
+def test_len() -> None:
+    point = Point(("Z", 2))
     assert len(point) == 2
 
 
-# pylint: disable-next=redefined-outer-name
-def test_repr(point: PointType) -> None:
-    assert repr(point) == "(Z, 2)"
+def test_repr() -> None:
+    point = Point(("Z", 2))
+    assert repr(point) == "('Z', 2)"
+
+
+def test_subtract() -> None:
+    assert Point(("AA", 8)) - (6, 3) == ("U", 5)

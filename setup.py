@@ -46,20 +46,18 @@ setup(
     name="bounden",
     packages=[
         "bounden",
-        "bounden.coordinates",
+        "bounden.axes",
         "bounden.points",
         "bounden.protocols",
         "bounden.regions",
-        "bounden.vectors",
         "bounden.volumes",
     ],
     package_data={
         "bounden": ["py.typed"],
-        "bounden.coordinates": ["py.typed"],
+        "bounden.axes": ["py.typed"],
         "bounden.points": ["py.typed"],
         "bounden.protocols": ["py.typed"],
         "bounden.regions": ["py.typed"],
-        "bounden.vectors": ["py.typed"],
         "bounden.volumes": ["py.typed"],
     },
     project_urls={
