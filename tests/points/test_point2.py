@@ -1,41 +1,27 @@
-from pytest import fixture
-
-from bounden import IntegerCoordinate, Point2, StringCoordinate
-
-PointType = Point2[StringCoordinate, IntegerCoordinate]
-
-
-@fixture
-def point() -> PointType:
-    return PointType.new(StringCoordinate("ZZ"), IntegerCoordinate(2))
+from bounden import Point2
 
 
 def test_new__type() -> None:
-    class DerivedPoint2(Point2[StringCoordinate, IntegerCoordinate]):
+    class DerivedPoint2(Point2[str, int]):
         pass
 
     def require_derived(_: DerivedPoint2) -> None:
         pass
 
-    p = DerivedPoint2.new(StringCoordinate("A"), IntegerCoordinate(1))
-    require_derived(p)
+    require_derived(DerivedPoint2.new("A", 1))
 
 
-# pylint: disable-next=redefined-outer-name
-def test_left(point: PointType) -> None:
-    assert point.left == StringCoordinate("ZZ")
+def test_left() -> None:
+    assert Point2.new("ZZ", 3).left == "ZZ"
 
 
-# pylint: disable-next=redefined-outer-name
-def test_top(point: PointType) -> None:
-    assert point.top == IntegerCoordinate(2)
+def test_top() -> None:
+    assert Point2.new("ZZ", 3).top == 3
 
 
-# pylint: disable-next=redefined-outer-name
-def test_x(point: PointType) -> None:
-    assert point.x == StringCoordinate("ZZ")
+def test_x() -> None:
+    assert Point2.new("ZZ", 3).x == "ZZ"
 
 
-# pylint: disable-next=redefined-outer-name
-def test_y(point: PointType) -> None:
-    assert point.y == IntegerCoordinate(2)
+def test_y() -> None:
+    assert Point2.new("ZZ", 3).y == 3
