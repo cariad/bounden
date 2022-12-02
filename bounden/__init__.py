@@ -6,16 +6,17 @@ For usage and support, see https://github.com/cariad/bounden.
 
 from importlib.resources import files
 
-from bounden.coordinates import (
-    Coordinate,
-    FloatCoordinate,
-    IntegerCoordinate,
-    StringCoordinate,
+from bounden.axes import (
+    Axes,
+    AxisOperation,
+    IntegerAxis,
+    NoAxisForType,
+    StringAxis,
+    axes,
 )
 from bounden.enums import Alignment
 from bounden.points import Point, Point2
 from bounden.regions import Region, Region2
-from bounden.vectors import Vector, Vector2
 from bounden.volumes import Percent, Volume, Volume2
 
 
@@ -30,18 +31,18 @@ def version() -> str:
 
 __all__ = [
     "Alignment",
-    "Coordinate",
-    "FloatCoordinate",
-    "IntegerCoordinate",
+    "Axes",
+    "AxisOperation",
+    "IntegerAxis",
+    "NoAxisForType",
     "Percent",
     "Point",
     "Point2",
     "Region",
     "Region2",
-    "StringCoordinate",
-    "Vector",
-    "Vector2",
+    "StringAxis",
     "Volume",
     "Volume2",
+    "axes",
     "version",
 ]

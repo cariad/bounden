@@ -1,6 +1,6 @@
 from typing import Any, Optional, Type, TypeVar
 
-from bounden.coordinates import Coordinate, XAxisT, YAxisT
+from bounden.axes import Axes, XAxisT, YAxisT
 from bounden.points.point import Point
 from bounden.protocols import RegionProtocol
 
@@ -15,16 +15,17 @@ class Point2(Point[tuple[XAxisT, YAxisT]]):
         cls: Type["Point2T"],
         x: XAxisT,
         y: YAxisT,
+        axes: Optional[Axes] = None,
         parent: Optional[RegionProtocol] = None,
     ) -> "Point2T":
         """
         Creates a new `Point2`.
         """
 
-        return cls((x, y), parent=parent)
+        return cls((x, y), axes_resolver=axes, parent=parent)
 
     @property
-    def left(self) -> Coordinate[XAxisT]:
+    def left(self) -> XAxisT:
         """
         Left.
         """
@@ -32,7 +33,7 @@ class Point2(Point[tuple[XAxisT, YAxisT]]):
         return self.x
 
     @property
-    def top(self) -> Coordinate[YAxisT]:
+    def top(self) -> YAxisT:
         """
         Top
         """
@@ -40,7 +41,7 @@ class Point2(Point[tuple[XAxisT, YAxisT]]):
         return self.y
 
     @property
-    def x(self) -> Coordinate[XAxisT]:
+    def x(self) -> XAxisT:
         """
         X coordinate.
         """
@@ -48,7 +49,7 @@ class Point2(Point[tuple[XAxisT, YAxisT]]):
         return self.coordinates[0]
 
     @property
-    def y(self) -> Coordinate[YAxisT]:
+    def y(self) -> YAxisT:
         """
         Y coordinate.
         """

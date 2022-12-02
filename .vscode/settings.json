@@ -8,6 +8,7 @@
     "pypa",
     "PYPI",
     "pytest",
+    "rebelbase",
     "shellcheck"
   ]
 }

@@ -1,6 +1,6 @@
 from typing import Any, Optional, Type, TypeVar
 
-from bounden.coordinates import Coordinate, XAxisT, YAxisT
+from bounden.axes import Axes, XAxisT, YAxisT
 from bounden.points import Point2
 from bounden.protocols import RegionProtocol
 from bounden.regions import Region
@@ -19,21 +19,28 @@ class Region2(Region[tuple[XAxisT, YAxisT]]):
         y: YAxisT,
         width: float | int | Percent,
         height: float | int | Percent,
+        axes_resolver: Optional[Axes] = None,
         parent: Optional[RegionProtocol] = None,
     ) -> "Region2T":
         """
         Creates a new `Region2`.
         """
 
-        return cls((x, y), (width, height), parent=parent)
+        return cls(
+            (x, y),
+            (width, height),
+            axes_resolver=axes_resolver,
+            parent=parent,
+        )
 
     @property
-    def bottom(self) -> Coordinate[YAxisT]:
+    def bottom(self) -> YAxisT:
         """
         Bottom.
         """
 
-        return self.top + self.height
+        axis = self._axes.get(self.top)
+        return axis.add(self.top, self.height)
 
     @property
     def height(self) -> float | int:
@@ -44,7 +51,7 @@ class Region2(Region[tuple[XAxisT, YAxisT]]):
         return self.volume.absolute(1)
 
     @property
-    def left(self) -> Coordinate[XAxisT]:
+    def left(self) -> XAxisT:
         """
         Left.
         """
@@ -72,15 +79,16 @@ class Region2(Region[tuple[XAxisT, YAxisT]]):
         return self.__class__.new(x, y, width, height, parent=self)
 
     @property
-    def right(self) -> Coordinate[XAxisT]:
+    def right(self) -> XAxisT:
         """
         Right.
         """
 
-        return self.left + self.width
+        axis = self._axes.get(self.left)
+        return axis.add(self.left, self.width)
 
     @property
-    def top(self) -> Coordinate[YAxisT]:
+    def top(self) -> YAxisT:
         """
         Top.
         """
@@ -96,7 +104,7 @@ class Region2(Region[tuple[XAxisT, YAxisT]]):
         return self.volume.absolute(0)
 
     @property
-    def x(self) -> Coordinate[XAxisT]:
+    def x(self) -> XAxisT:
         """
         X coordinate.
         """
@@ -104,7 +112,7 @@ class Region2(Region[tuple[XAxisT, YAxisT]]):
         return self.position.coordinates[0]
 
     @property
-    def y(self) -> Coordinate[YAxisT]:
+    def y(self) -> YAxisT:
         """
         Y coordinate.
         """
