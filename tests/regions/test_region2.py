@@ -1,4 +1,4 @@
-from bounden import Alignment, Region2
+from bounden import Alignment, Percent, Region2
 
 
 def require_region2(_: Region2[str, int]) -> None:
@@ -7,6 +7,10 @@ def require_region2(_: Region2[str, int]) -> None:
 
 def test_add__type() -> None:
     require_region2(Region2.new("ZZ", 2, 7, 9) + (1, 1))
+
+
+def test_height() -> None:
+    assert Region2.new("ZZ", 2, 7, Percent(11)).height == Percent(11)
 
 
 def test_left() -> None:
@@ -35,5 +39,16 @@ def test_point2__alignment() -> None:
     assert point.resolve() == ("AAG", 11)
 
 
+def test_region2() -> None:
+    parent = Region2.new("ZZ", 2, 7, 9)
+    child = parent.region2(Alignment.Center, 9, 11, 12)
+    assert child.position == (Alignment.Center, 9)
+    assert child.volume == (11, 12)
+
+
 def test_top() -> None:
     assert Region2.new("ZZ", 2, 7, 9).top == 2
+
+
+def test_width() -> None:
+    assert Region2.new("ZZ", 2, Percent(17), 9).width == Percent(17)
