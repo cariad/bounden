@@ -5,6 +5,7 @@ from bounden.enums import Alignment
 from bounden.points import Point2
 from bounden.regions import Region
 from bounden.resolution import RegionResolver
+from bounden.resolved import ResolvedRegion2
 from bounden.volumes import Percent
 
 
@@ -85,6 +86,17 @@ class Region2(Region[tuple[XAxisT, YAxisT]]):
             height,
             axes=self._axes,
             within=self._resolver,
+        )
+
+    def resolve2(self) -> ResolvedRegion2[XAxisT, YAxisT]:
+        """
+        Resolves the region.
+        """
+
+        return ResolvedRegion2(
+            self._axes,
+            self._position.resolve(),
+            self._volume.resolve(),
         )
 
     @property

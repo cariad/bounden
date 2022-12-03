@@ -23,9 +23,7 @@ class ResolvedRegion(Generic[AxesT]):
     def __eq__(self, other: Any) -> bool:
         if isinstance(other, ResolvedRegion):
             return (
-                self.axes == other.axes
-                and self.position == other.position
-                and self.volume == other.volume
+                self.position == other.position and self.volume == other.volume
             )
 
         if isinstance(other, (list, tuple)):
@@ -42,14 +40,6 @@ class ResolvedRegion(Generic[AxesT]):
 
     def __repr__(self) -> str:
         return f"{self._position} x {self._volume}"
-
-    @property
-    def axes(self) -> tuple[Axis[Any], ...]:
-        """
-        Axes.
-        """
-
-        return tuple(self._axes)
 
     @property
     def position(self) -> ResolvedPoint[AxesT]:

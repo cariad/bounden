@@ -41,6 +41,21 @@ def test_eq__resolved_region__axes_mismatch() -> None:
         ResolvedPoint((IntegerAxis(),), (1, 2)),
         ResolvedVolume(3, 4),
     )
+    assert a == b
+
+
+def test_eq__resolved_region__position_mismatch() -> None:
+    a = ResolvedRegion(
+        (IntegerAxis(),),
+        ResolvedPoint((), (1, 2)),
+        ResolvedVolume(3, 4),
+    )
+
+    b = ResolvedRegion(
+        (IntegerAxis(),),
+        ResolvedPoint((IntegerAxis(),), (2, 2)),
+        ResolvedVolume(3, 4),
+    )
     assert a != b
 
 

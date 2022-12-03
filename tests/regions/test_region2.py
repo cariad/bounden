@@ -1,4 +1,11 @@
-from bounden import Alignment, Percent, Region2
+from bounden import (
+    Alignment,
+    Percent,
+    Region2,
+    ResolvedPoint,
+    ResolvedRegion2,
+    ResolvedVolume,
+)
 
 
 def require_region2(_: Region2[str, int]) -> None:
@@ -44,6 +51,19 @@ def test_region2() -> None:
     child = parent.region2(Alignment.Center, 9, 11, 12)
     assert child.position == (Alignment.Center, 9)
     assert child.volume == (11, 12)
+
+
+def test_resolve2() -> None:
+    parent = Region2.new("ZZ", 2, 8, 9)
+    child = parent.region2(Alignment.Center, 9, 4, 12)
+
+    expect = ResolvedRegion2(
+        (),
+        ResolvedPoint((), ("AAB", 11)),
+        ResolvedVolume(4, 12),
+    )
+
+    assert child.resolve2() == expect
 
 
 def test_top() -> None:
