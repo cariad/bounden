@@ -47,17 +47,21 @@ setup(
     packages=[
         "bounden",
         "bounden.axes",
+        "bounden.enums",
         "bounden.points",
-        "bounden.protocols",
         "bounden.regions",
+        "bounden.resolution",
+        "bounden.resolved",
         "bounden.volumes",
     ],
     package_data={
         "bounden": ["py.typed"],
         "bounden.axes": ["py.typed"],
+        "bounden.enums": ["py.typed"],
         "bounden.points": ["py.typed"],
-        "bounden.protocols": ["py.typed"],
         "bounden.regions": ["py.typed"],
+        "bounden.resolution": ["py.typed"],
+        "bounden.resolved": ["py.typed"],
         "bounden.volumes": ["py.typed"],
     },
     project_urls={

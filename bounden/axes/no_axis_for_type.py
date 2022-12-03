@@ -7,4 +7,5 @@ class NoAxisForType(ValueError):
     """
 
     def __init__(self, value: Any) -> None:
-        super().__init__(f"No axis for {repr(value)} ({type(value)})")
+        msg = f"No axis for {repr(value)} ({value.__class__.__name__})"
+        super().__init__(msg)

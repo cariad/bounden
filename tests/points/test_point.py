@@ -1,6 +1,6 @@
 from pytest import raises
 
-from bounden import Point
+from bounden import Alignment, Point, Region
 
 
 def test_add__int() -> None:
@@ -35,6 +35,24 @@ def test_len() -> None:
 def test_repr() -> None:
     point = Point(("Z", 2))
     assert repr(point) == "('Z', 2)"
+
+
+def test_resolve__near() -> None:
+    parent = Region(("B", 3), (11, 11))
+    point = parent.point((Alignment.Near, 4))
+    assert point.resolve() == ("B", 7)
+
+
+def test_resolve__center() -> None:
+    parent = Region(("B", 3), (4, 11))
+    point = parent.point((Alignment.Center, 5))
+    assert point.resolve() == ("D", 8)
+
+
+def test_resolve__far() -> None:
+    parent = Region(("B", 3), (12, 11))
+    point = parent.point((Alignment.Far, 6))
+    assert point.resolve() == ("N", 9)
 
 
 def test_subtract() -> None:

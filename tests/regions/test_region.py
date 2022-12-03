@@ -1,6 +1,6 @@
 from pytest import fixture, raises
 
-from bounden import Region
+from bounden import Alignment, Region, ResolvedPoint, ResolvedVolume
 
 RegionType = Region[tuple[str, int]]
 
@@ -38,15 +38,35 @@ def test_position(region: RegionType) -> None:
     assert region.position.coordinates == ("A", 1)
 
 
-# pylint: disable-next=redefined-outer-name
-def test_region(region: RegionType) -> None:
-    nr = region.region(("B", 2), (10, 11))
-    assert nr.position == ("B", 2)
-    assert nr.volume == (10, 11)
-
-
 def test_repr() -> None:
-    assert repr(Region((2.1, 2.2), (6.4, 6.5))) == "(2.1, 2.2) x (6.4, 6.5)"
+    assert repr(Region((1, 2), (3, 4))) == "(1, 2) x (3, 4)"
+
+
+def test_resolve__near() -> None:
+    parent = Region((2, 3), (13, 15))
+    child = parent.region((Alignment.Near, 4), (7, 9))
+    assert child.resolve() == (
+        ResolvedPoint((2, 7)),
+        ResolvedVolume(7, 9),
+    )
+
+
+def test_resolve__center() -> None:
+    parent = Region((2, 3), (7, 15))
+    child = parent.region((Alignment.Center, 4), (3, 9))
+    assert child.resolve() == (
+        ResolvedPoint((4, 7)),
+        ResolvedVolume(3, 9),
+    )
+
+
+def test_resolve__far() -> None:
+    parent = Region((2, 3), (7, 15))
+    child = parent.region((Alignment.Far, 4), (3, 9))
+    assert child.resolve() == (
+        ResolvedPoint((6, 7)),
+        ResolvedVolume(3, 9),
+    )
 
 
 # pylint: disable-next=redefined-outer-name

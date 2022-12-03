@@ -7,15 +7,22 @@ For usage and support, see https://github.com/cariad/bounden.
 from importlib.resources import files
 
 from bounden.axes import (
-    Axes,
     AxisOperation,
     IntegerAxis,
     NoAxisForType,
     StringAxis,
-    axes,
+    get_axis,
+    register_axis,
 )
+from bounden.enums import Alignment
 from bounden.points import Point, Point2
 from bounden.regions import Region, Region2
+from bounden.resolved import (
+    ResolvedPoint,
+    ResolvedRegion,
+    ResolvedRegion2,
+    ResolvedVolume,
+)
 from bounden.volumes import Percent, Volume, Volume2
 
 
@@ -29,7 +36,7 @@ def version() -> str:
 
 
 __all__ = [
-    "Axes",
+    "Alignment",
     "AxisOperation",
     "IntegerAxis",
     "NoAxisForType",
@@ -38,9 +45,14 @@ __all__ = [
     "Point2",
     "Region",
     "Region2",
+    "ResolvedPoint",
+    "ResolvedRegion",
+    "ResolvedRegion2",
+    "ResolvedVolume",
     "StringAxis",
     "Volume",
     "Volume2",
-    "axes",
+    "get_axis",
+    "register_axis",
     "version",
 ]
