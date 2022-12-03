@@ -136,10 +136,8 @@ class Point(Generic[AxesT]):
                         translated_coords.append(axis.to_value(distance))
 
                     case _:
-                        msg = (
-                            f"Unrecognised alignment {repr(coordinate.value)}"
-                        )
-                        raise ValueError(msg)
+                        m = f"Unrecognised alignment {repr(coordinate.value)}"
+                        raise ValueError(m)
 
             else:
                 translated = coordinate
