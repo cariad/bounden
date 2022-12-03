@@ -53,7 +53,7 @@ def test_region2() -> None:
     assert child.volume == (11, 12)
 
 
-def test_resolve2() -> None:
+def test_resolve() -> None:
     parent = Region2.new("ZZ", 2, 8, 9)
     child = parent.region2(Alignment.Center, 9, 4, 12)
 
@@ -63,7 +63,7 @@ def test_resolve2() -> None:
         ResolvedVolume(4, 12),
     )
 
-    assert child.resolve2() == expect
+    assert child.resolve() == expect
 
 
 def test_top() -> None:

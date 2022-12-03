@@ -1,5 +1,6 @@
 from bounden import (
     IntegerAxis,
+    Percent,
     ResolvedPoint,
     ResolvedRegion2,
     ResolvedVolume,
@@ -26,6 +27,26 @@ def test_height() -> None:
 
 def test_left() -> None:
     assert region.left == "AA"
+
+
+def test_region2() -> None:
+    axes = (IntegerAxis(), IntegerAxis())
+
+    parent = ResolvedRegion2[int, int](
+        axes,
+        ResolvedPoint(axes, (3, 4)),
+        ResolvedVolume(17, 18),
+    )
+
+    child = parent.region2(5, 7, 8, Percent(50))
+
+    expect = ResolvedRegion2[int, int](
+        axes,
+        ResolvedPoint(axes, (8, 11)),
+        ResolvedVolume(8, 9),
+    )
+
+    assert child.resolve() == expect
 
 
 def test_right() -> None:

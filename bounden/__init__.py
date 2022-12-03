@@ -8,6 +8,7 @@ from importlib.resources import files
 
 from bounden.axes import (
     AxisOperation,
+    FloatAxis,
     IntegerAxis,
     NoAxisForType,
     StringAxis,
@@ -16,13 +17,9 @@ from bounden.axes import (
 )
 from bounden.enums import Alignment
 from bounden.points import Point, Point2
-from bounden.regions import Region, Region2
-from bounden.resolved import (
-    ResolvedPoint,
-    ResolvedRegion,
-    ResolvedRegion2,
-    ResolvedVolume,
-)
+from bounden.region import Region, ResolvedRegion
+from bounden.region2 import Region2, ResolvedRegion2
+from bounden.resolved import ResolvedPoint, ResolvedVolume
 from bounden.volumes import Percent, Volume, Volume2
 
 
@@ -39,6 +36,7 @@ __all__ = [
     "Alignment",
     "AxisOperation",
     "IntegerAxis",
+    "FloatAxis",
     "NoAxisForType",
     "Percent",
     "Point",

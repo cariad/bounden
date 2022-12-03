@@ -1,4 +1,4 @@
-from typing import Any, Optional, Type, TypeVar
+from typing import Any, Optional, Sequence, Type, TypeVar
 
 from bounden.axes import Axis, XAxisT, YAxisT
 from bounden.enums import Alignment
@@ -16,9 +16,9 @@ class Point2(Point[tuple[XAxisT, YAxisT]]):
         cls: Type["Point2T"],
         x: Alignment | XAxisT,
         y: Alignment | YAxisT,
-        axes: Optional[tuple[Axis[Any], ...]] = None,
+        axes: Optional[Sequence[Axis[Any]]] = None,
         origin_of: Optional[GetResolvedVolume] = None,
-        within: Optional[RegionResolver[tuple[XAxisT, YAxisT]]] = None,
+        within: Optional[RegionResolver] = None,
     ) -> "Point2T":
         """
         Creates a new `Point2`.

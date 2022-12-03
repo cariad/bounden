@@ -1,7 +1,9 @@
 from typing import Any, Iterator
 
+from bounden.protocols import ResolvedVolumeProtocol
 
-class ResolvedVolume:
+
+class ResolvedVolume(ResolvedVolumeProtocol):
     """
     An resolved n-dimensional volume.
     """

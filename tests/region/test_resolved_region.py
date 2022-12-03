@@ -1,4 +1,11 @@
-from bounden import IntegerAxis, ResolvedPoint, ResolvedRegion, ResolvedVolume
+from bounden import (
+    FloatAxis,
+    IntegerAxis,
+    Percent,
+    ResolvedPoint,
+    ResolvedRegion,
+    ResolvedVolume,
+)
 
 
 def test_add() -> None:
@@ -57,6 +64,46 @@ def test_eq__resolved_region__position_mismatch() -> None:
         ResolvedVolume(3, 4),
     )
     assert a != b
+
+
+def test_expand() -> None:
+    axes = (FloatAxis(), FloatAxis())
+
+    region = ResolvedRegion(
+        axes,
+        ResolvedPoint(axes, (7, 9)),
+        ResolvedVolume(3, 4),
+    )
+
+    expanded = region.expand(3)
+
+    expect = ResolvedRegion(
+        axes,
+        ResolvedPoint(axes, (5.5, 7.5)),
+        ResolvedVolume(6, 7),
+    )
+
+    assert expanded == expect
+
+
+def test_region() -> None:
+    axes = (IntegerAxis(), IntegerAxis())
+
+    parent = ResolvedRegion[tuple[int, int]](
+        axes,
+        ResolvedPoint(axes, (3, 4)),
+        ResolvedVolume(17, 18),
+    )
+
+    child = parent.region((5, 7), (8, Percent(50)))
+
+    expect = ResolvedRegion[tuple[int, int]](
+        axes,
+        ResolvedPoint(axes, (8, 11)),
+        ResolvedVolume(8, 9),
+    )
+
+    assert child.resolve() == expect
 
 
 def test_repr() -> None:

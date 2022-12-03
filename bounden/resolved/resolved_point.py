@@ -1,17 +1,18 @@
-from typing import Any, Generic, Iterator, TypeVar
+from typing import Any, Generic, Iterator, Sequence, TypeVar
 
 from bounden.axes import AxesT, Axis, AxisOperation
+from bounden.protocols import ResolvedPointProtocol
 from bounden.vectors import transform_coordinates
 
 
-class ResolvedPoint(Generic[AxesT]):
+class ResolvedPoint(ResolvedPointProtocol, Generic[AxesT]):
     """
     A resolved point in n-dimensional space.
     """
 
     def __init__(
         self,
-        axes: tuple[Axis[Any], ...],
+        axes: Sequence[Axis[Any]],
         coordinates: AxesT,
     ) -> None:
         self._axes = axes
@@ -31,6 +32,9 @@ class ResolvedPoint(Generic[AxesT]):
 
     def __repr__(self) -> str:
         return repr(self._coordinates)
+
+    def __sub__(self: "ResolvedPointT", other: Any) -> "ResolvedPointT":
+        return self._operate(other, AxisOperation.Subtract)
 
     def _operate(
         self: "ResolvedPointT",
