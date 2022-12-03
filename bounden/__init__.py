@@ -8,6 +8,7 @@ from importlib.resources import files
 
 from bounden.axes import (
     AxisOperation,
+    FloatAxis,
     IntegerAxis,
     NoAxisForType,
     StringAxis,
@@ -39,6 +40,7 @@ __all__ = [
     "Alignment",
     "AxisOperation",
     "IntegerAxis",
+    "FloatAxis",
     "NoAxisForType",
     "Percent",
     "Point",

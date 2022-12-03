@@ -41,6 +41,24 @@ class ResolvedRegion(Generic[AxesT]):
     def __repr__(self) -> str:
         return f"{self._position} x {self._volume}"
 
+    def expand(
+        self: "ResolvedRegionT",
+        length: float | int,
+    ) -> "ResolvedRegionT":
+        """
+        Returns a new resolved region expanded by `length` about its centre.
+
+        Pass a negative length to contract.
+        """
+
+        coords = self._position - (length / 2)
+        position = self._position.__class__(self._axes, coords)
+
+        lengths = [vl + length for vl in self._volume]
+        volume = self._volume.__class__(*lengths)
+
+        return self.__class__(self._axes, position, volume)
+
     @property
     def position(self) -> ResolvedPoint[AxesT]:
         """
