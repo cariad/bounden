@@ -1,30 +1,12 @@
-from pytest import fixture
-
-from bounden import Region2
-
-Region2Type = Region2[str, int]
+from bounden import Alignment, Region2
 
 
-@fixture
-def region() -> Region2Type:
-    return Region2.new("ZZ", 2, 7, 9)
-
-
-def require_region2(_: Region2Type) -> None:
+def require_region2(_: Region2[str, int]) -> None:
     pass
 
 
 def test_add__type() -> None:
     require_region2(Region2.new("ZZ", 2, 7, 9) + (1, 1))
-
-
-def test_bottom() -> None:
-    assert Region2.new("ZZ", 2, 7, 9).bottom == 11
-
-
-# pylint: disable-next=redefined-outer-name
-def test_height(region: Region2Type) -> None:
-    assert region.height == 9
 
 
 def test_left() -> None:
@@ -41,27 +23,17 @@ def test_new__type() -> None:
     require_derived(DerivedRegion2.new("A", 1, 1, 1))
 
 
-# pylint: disable-next=redefined-outer-name
-def test_point2(region: Region2Type) -> None:
-    point = region.point2("C", 7)
-    assert point == ("C", 7)
+def test_point2() -> None:
+    parent = Region2.new("ZZ", 2, 7, 9)
+    point = parent.point2("E", 9)
+    assert point.resolve() == ("AAE", 11)
 
 
-# pylint: disable-next=redefined-outer-name
-def test_region2(region: Region2Type) -> None:
-    nr = region.region2("B", 2, 10, 11)
-    assert nr.position == ("B", 2)
-    assert nr.volume == (10, 11)
-
-
-def test_right() -> None:
-    assert Region2.new("ZZ", 2, 7, 9).right == "AAG"
+def test_point2__alignment() -> None:
+    parent = Region2.new("ZZ", 2, 7, 9)
+    point = parent.point2(Alignment.Far, 9)
+    assert point.resolve() == ("AAG", 11)
 
 
 def test_top() -> None:
     assert Region2.new("ZZ", 2, 7, 9).top == 2
-
-
-# pylint: disable-next=redefined-outer-name
-def test_width(region: Region2Type) -> None:
-    assert region.width == 7

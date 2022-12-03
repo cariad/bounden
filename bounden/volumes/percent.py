@@ -21,5 +21,9 @@ class Percent:
     def __repr__(self) -> str:
         return str(self._percent) + "%"
 
-    def calculate(self, full: float) -> float:
-        return full / 100 * self._percent
+    def calculate(self, length: float) -> float:
+        """
+        Calculates the percentage of `length`.
+        """
+
+        return length * (self._percent / 100)

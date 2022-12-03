@@ -1,6 +1,6 @@
 from typing import Optional, Type, TypeVar
 
-from bounden.protocols import VolumeProtocol
+from bounden.resolution import GetResolvedVolume
 from bounden.volumes.percent import Percent
 from bounden.volumes.volume import Volume
 
@@ -15,29 +15,29 @@ class Volume2(Volume):
         cls: Type["Volume2T"],
         width: float | int | Percent,
         height: float | int | Percent,
-        parent: Optional[VolumeProtocol] = None,
+        within: Optional[GetResolvedVolume] = None,
     ) -> "Volume2T":
         """
         Creates a new `Volume2`.
         """
 
-        return cls(width, height, parent=parent)
+        return cls(width, height, within=within)
 
     @property
-    def height(self) -> float | int:
+    def height(self) -> float | int | Percent:
         """
         Height.
         """
 
-        return self.absolute(1)
+        return self[1]
 
     @property
-    def width(self) -> float | int:
+    def width(self) -> float | int | Percent:
         """
         Width.
         """
 
-        return self.absolute(0)
+        return self[0]
 
 
 Volume2T = TypeVar("Volume2T", bound=Volume2)

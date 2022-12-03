@@ -1,9 +1,10 @@
 from typing import Any, Optional, Type, TypeVar
 
-from bounden.axes import Axes, XAxisT, YAxisT
+from bounden.axes import Axis, XAxisT, YAxisT
+from bounden.enums import Alignment
 from bounden.points import Point2
-from bounden.protocols import RegionProtocol
 from bounden.regions import Region
+from bounden.resolution import RegionResolver
 from bounden.volumes import Percent
 
 
@@ -15,12 +16,12 @@ class Region2(Region[tuple[XAxisT, YAxisT]]):
     @classmethod
     def new(
         cls: Type["Region2T"],
-        x: XAxisT,
-        y: YAxisT,
+        x: Alignment | XAxisT,
+        y: Alignment | YAxisT,
         width: float | int | Percent,
         height: float | int | Percent,
-        axes_resolver: Optional[Axes] = None,
-        parent: Optional[RegionProtocol] = None,
+        axes: Optional[tuple[Axis[Any], ...]] = None,
+        within: Optional[RegionResolver[tuple[XAxisT, YAxisT]]] = None,
     ) -> "Region2T":
         """
         Creates a new `Region2`.
@@ -29,46 +30,47 @@ class Region2(Region[tuple[XAxisT, YAxisT]]):
         return cls(
             (x, y),
             (width, height),
-            axes_resolver=axes_resolver,
-            parent=parent,
+            axes=axes,
+            within=within,
         )
 
     @property
-    def bottom(self) -> YAxisT:
-        """
-        Bottom.
-        """
-
-        axis = self._axes.get(self.top)
-        return axis.add(self.top, self.height)
-
-    @property
-    def height(self) -> float | int:
+    def height(self) -> float | int | Percent:
         """
         Height.
         """
 
-        return self.volume.absolute(1)
+        return self.volume[1]
 
     @property
-    def left(self) -> XAxisT:
+    def left(self) -> Alignment | XAxisT:
         """
         Left.
         """
 
         return self.x
 
-    def point2(self, x: XAxisT, y: YAxisT) -> Point2[XAxisT, YAxisT]:
+    def point2(
+        self,
+        x: Alignment | XAxisT,
+        y: Alignment | YAxisT,
+    ) -> Point2[XAxisT, YAxisT]:
         """
         Creates a child point.
         """
 
-        return Point2.new(x, y, parent=self)
+        return Point2.new(
+            x,
+            y,
+            axes=self._axes,
+            origin_of=None,
+            within=self._resolver,
+        )
 
     def region2(
         self: "Region2T",
-        x: XAxisT,
-        y: YAxisT,
+        x: Alignment | XAxisT,
+        y: Alignment | YAxisT,
         width: float | int | Percent,
         height: float | int | Percent,
     ) -> "Region2T":
@@ -76,19 +78,17 @@ class Region2(Region[tuple[XAxisT, YAxisT]]):
         Creates a child region.
         """
 
-        return self.__class__.new(x, y, width, height, parent=self)
+        return self.__class__.new(
+            x,
+            y,
+            width,
+            height,
+            axes=self._axes,
+            within=self._resolver,
+        )
 
     @property
-    def right(self) -> XAxisT:
-        """
-        Right.
-        """
-
-        axis = self._axes.get(self.left)
-        return axis.add(self.left, self.width)
-
-    @property
-    def top(self) -> YAxisT:
+    def top(self) -> Alignment | YAxisT:
         """
         Top.
         """
@@ -96,15 +96,15 @@ class Region2(Region[tuple[XAxisT, YAxisT]]):
         return self.y
 
     @property
-    def width(self) -> float | int:
+    def width(self) -> float | int | Percent:
         """
         Width.
         """
 
-        return self.volume.absolute(0)
+        return self.volume[0]
 
     @property
-    def x(self) -> XAxisT:
+    def x(self) -> Alignment | XAxisT:
         """
         X coordinate.
         """
@@ -112,7 +112,7 @@ class Region2(Region[tuple[XAxisT, YAxisT]]):
         return self.position.coordinates[0]
 
     @property
-    def y(self) -> YAxisT:
+    def y(self) -> Alignment | YAxisT:
         """
         Y coordinate.
         """
