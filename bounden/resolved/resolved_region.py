@@ -1,4 +1,4 @@
-from typing import Any, Generic, Sequence
+from typing import Any, Generic, Sequence, TypeVar
 
 from bounden.axes import AxesT, Axis
 from bounden.resolved.resolved_point import ResolvedPoint
@@ -23,9 +23,7 @@ class ResolvedRegion(Generic[AxesT]):
     def __eq__(self, other: Any) -> bool:
         if isinstance(other, ResolvedRegion):
             return (
-                self.axes == other.axes
-                and self.position == other.position
-                and self.volume == other.volume
+                self.position == other.position and self.volume == other.volume
             )
 
         if isinstance(other, (list, tuple)):
@@ -37,16 +35,11 @@ class ResolvedRegion(Generic[AxesT]):
 
         return False
 
+    def __add__(self: "ResolvedRegionT", other: Any) -> "ResolvedRegionT":
+        return self.__class__(self._axes, self._position + other, self._volume)
+
     def __repr__(self) -> str:
         return f"{self._position} x {self._volume}"
-
-    @property
-    def axes(self) -> tuple[Axis[Any], ...]:
-        """
-        Axes.
-        """
-
-        return tuple(self._axes)
 
     @property
     def position(self) -> ResolvedPoint[AxesT]:
@@ -63,3 +56,6 @@ class ResolvedRegion(Generic[AxesT]):
         """
 
         return self._volume
+
+
+ResolvedRegionT = TypeVar("ResolvedRegionT", bound=ResolvedRegion[Any])
