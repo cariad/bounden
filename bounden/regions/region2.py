@@ -88,7 +88,7 @@ class Region2(Region[tuple[XAxisT, YAxisT]]):
             within=self._resolver,
         )
 
-    def resolve2(self) -> ResolvedRegion2[XAxisT, YAxisT]:
+    def resolve(self) -> ResolvedRegion2[XAxisT, YAxisT]:
         """
         Resolves the region.
         """
