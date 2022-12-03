@@ -1,19 +1,11 @@
-from typing import (
-    Any,
-    Generic,
-    Iterator,
-    List,
-    Optional,
-    Sequence,
-    TypeVar,
-    cast,
-)
+from typing import Any, Generic, Iterator, List, Optional, TypeVar, cast
 
 from bounden.axes import AxesT, Axis, AxisOperation, get_axis
 from bounden.enums import Alignment
 from bounden.log import log
 from bounden.resolution import GetResolvedVolume, RegionResolver
 from bounden.resolved import ResolvedPoint
+from bounden.vectors import transform_coordinates
 
 
 class Point(Generic[AxesT]):
@@ -56,15 +48,12 @@ class Point(Generic[AxesT]):
         Returns a new point based on the `op` between this and `vector`.
         """
 
-        translated_coords: List[Any] = []
-
-        for index, point_coord in enumerate(self._coordinates):
-            axis = self._axes[index]
-            vector_coord = self._vector(vector, index)
-            result = axis.operate(point_coord, vector_coord, op)
-            translated_coords.append(result)
-
-        coordinates = cast(AxesT, tuple(translated_coords))
+        coordinates = transform_coordinates(
+            self._axes,
+            self._coordinates,
+            vector,
+            op,
+        )
 
         return self.__class__(
             coordinates,
@@ -72,19 +61,6 @@ class Point(Generic[AxesT]):
             origin_of=self._origin_of,
             within=self._within,
         )
-
-    def _vector(self, vector: Any, dimension: int) -> float:
-        """
-        Gets the `vector` force of `dimension`.
-        """
-
-        if isinstance(vector, (float, int)):
-            return vector
-
-        if isinstance(vector, (list, tuple)):
-            return cast(Sequence[float], vector)[dimension]
-
-        raise ValueError(f"{repr(vector)} ({type(vector)}) is not a vector")
 
     @property
     def coordinates(self) -> AxesT:
@@ -151,7 +127,7 @@ class Point(Generic[AxesT]):
 
         resolved_point = cast(AxesT, tuple(translated_coords))
         log.debug("Resolved %s to %s", self, resolved_point)
-        return ResolvedPoint(resolved_point)
+        return ResolvedPoint(self._axes, resolved_point)
 
 
 PointT = TypeVar("PointT", bound=Point[Any])

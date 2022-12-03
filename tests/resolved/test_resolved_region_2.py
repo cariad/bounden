@@ -11,7 +11,7 @@ y_axis = IntegerAxis()
 
 region = ResolvedRegion2(
     (x_axis, y_axis),
-    ResolvedPoint(("AA", 3)),
+    ResolvedPoint((x_axis, y_axis), ("AA", 3)),
     ResolvedVolume(11, 13),
 )
 

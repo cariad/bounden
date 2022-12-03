@@ -46,7 +46,7 @@ def test_resolve__near() -> None:
     parent = Region((2, 3), (13, 15))
     child = parent.region((Alignment.Near, 4), (7, 9))
     assert child.resolve() == (
-        ResolvedPoint((2, 7)),
+        ResolvedPoint((), (2, 7)),
         ResolvedVolume(7, 9),
     )
 
@@ -55,7 +55,7 @@ def test_resolve__center() -> None:
     parent = Region((2, 3), (7, 15))
     child = parent.region((Alignment.Center, 4), (3, 9))
     assert child.resolve() == (
-        ResolvedPoint((4, 7)),
+        ResolvedPoint((), (4, 7)),
         ResolvedVolume(3, 9),
     )
 
@@ -64,7 +64,7 @@ def test_resolve__far() -> None:
     parent = Region((2, 3), (7, 15))
     child = parent.region((Alignment.Far, 4), (3, 9))
     assert child.resolve() == (
-        ResolvedPoint((6, 7)),
+        ResolvedPoint((), (6, 7)),
         ResolvedVolume(3, 9),
     )
 
