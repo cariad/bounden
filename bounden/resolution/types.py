@@ -1,14 +1,13 @@
 from typing import Callable
 
-from bounden.axes import AxesT
-from bounden.resolved import ResolvedPoint, ResolvedVolume
+from bounden.protocols import ResolvedPointProtocol, ResolvedVolumeProtocol
 
-GetResolvedPoint = Callable[[], ResolvedPoint[AxesT]]
+GetResolvedPoint = Callable[[], ResolvedPointProtocol]
 """
 Function that returns a resolved point.
 """
 
-GetResolvedVolume = Callable[[], ResolvedVolume]
+GetResolvedVolume = Callable[[], ResolvedVolumeProtocol]
 """
 Function that returns a resolved volume.
 """

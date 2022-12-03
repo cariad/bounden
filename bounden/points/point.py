@@ -1,4 +1,13 @@
-from typing import Any, Generic, Iterator, List, Optional, TypeVar, cast
+from typing import (
+    Any,
+    Generic,
+    Iterator,
+    List,
+    Optional,
+    Sequence,
+    TypeVar,
+    cast,
+)
 
 from bounden.axes import AxesT, Axis, AxisOperation, get_axis
 from bounden.enums import Alignment
@@ -16,9 +25,9 @@ class Point(Generic[AxesT]):
     def __init__(
         self,
         coordinates: AxesT,
-        axes: Optional[tuple[Axis[Any], ...]] = None,
+        axes: Optional[Sequence[Axis[Any]]] = None,
         origin_of: Optional[GetResolvedVolume] = None,
-        within: Optional[RegionResolver[AxesT]] = None,
+        within: Optional[RegionResolver] = None,
     ) -> None:
         self._axes = axes or tuple(get_axis(c) for c in coordinates)
         self._coordinates = coordinates

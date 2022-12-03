@@ -1,6 +1,7 @@
 from bounden import (
     FloatAxis,
     IntegerAxis,
+    Percent,
     ResolvedPoint,
     ResolvedRegion,
     ResolvedVolume,
@@ -83,6 +84,26 @@ def test_expand() -> None:
     )
 
     assert expanded == expect
+
+
+def test_region() -> None:
+    axes = (IntegerAxis(), IntegerAxis())
+
+    parent = ResolvedRegion[tuple[int, int]](
+        axes,
+        ResolvedPoint(axes, (3, 4)),
+        ResolvedVolume(17, 18),
+    )
+
+    child = parent.region((5, 7), (8, Percent(50)))
+
+    expect = ResolvedRegion[tuple[int, int]](
+        axes,
+        ResolvedPoint(axes, (8, 11)),
+        ResolvedVolume(8, 9),
+    )
+
+    assert child.resolve() == expect
 
 
 def test_repr() -> None:

@@ -1,10 +1,11 @@
 from typing import Any, Generic, Iterator, Sequence, TypeVar
 
 from bounden.axes import AxesT, Axis, AxisOperation
+from bounden.protocols import ResolvedPointProtocol
 from bounden.vectors import transform_coordinates
 
 
-class ResolvedPoint(Generic[AxesT]):
+class ResolvedPoint(ResolvedPointProtocol, Generic[AxesT]):
     """
     A resolved point in n-dimensional space.
     """
