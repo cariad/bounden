@@ -5,7 +5,7 @@ from bounden.protocols import ResolvedVolumeProtocol
 
 class ResolvedVolume(ResolvedVolumeProtocol):
     """
-    An resolved n-dimensional volume.
+    A resolved n-dimensional volume.
     """
 
     def __init__(self, *lengths: float | int) -> None:
