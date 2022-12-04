@@ -20,7 +20,8 @@ from bounden.points import Point, Point2
 from bounden.region import Region, ResolvedRegion
 from bounden.region2 import Region2, ResolvedRegion2
 from bounden.resolved import ResolvedPoint, ResolvedVolume
-from bounden.volumes import Percent, Volume, Volume2
+from bounden.volume2 import ResolvedVolume2, Volume2
+from bounden.volumes import Percent, Volume
 
 
 def version() -> str:
@@ -47,6 +48,7 @@ __all__ = [
     "ResolvedRegion",
     "ResolvedRegion2",
     "ResolvedVolume",
+    "ResolvedVolume2",
     "StringAxis",
     "Volume",
     "Volume2",
