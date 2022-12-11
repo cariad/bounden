@@ -24,13 +24,14 @@ from bounden.points import Point, Point2
 from bounden.region import Region, RegionT, ResolvedRegion, ResolvedRegionT
 from bounden.region2 import Region2, Region2T, ResolvedRegion2
 from bounden.resolved import ResolvedPoint, ResolvedVolume
+from bounden.types import Percent
+from bounden.volume import Volume, VolumeT
 from bounden.volume2 import (
     ResolvedVolume2,
     ResolvedVolume2T,
     Volume2,
     Volume2T,
 )
-from bounden.volumes import Percent, Volume, VolumeT
 
 
 def version() -> str:

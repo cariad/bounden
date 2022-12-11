@@ -7,7 +7,7 @@ from bounden.enums import Alignment
 from bounden.points import Point2
 from bounden.region import Region, ResolvedRegion
 from bounden.resolution import RegionResolver
-from bounden.volumes import Percent
+from bounden.types import Length, ResolvedLength
 
 
 class Region2(Region[tuple[XAxisT, YAxisT]]):
@@ -20,8 +20,8 @@ class Region2(Region[tuple[XAxisT, YAxisT]]):
         cls: Type["Region2T"],
         x: Alignment | XAxisT,
         y: Alignment | YAxisT,
-        width: float | int | Percent,
-        height: float | int | Percent,
+        width: Length,
+        height: Length,
         axes: Optional[Sequence[Axis[Any]]] = None,
         within: Optional[RegionResolver] = None,
     ) -> "Region2T":
@@ -37,7 +37,7 @@ class Region2(Region[tuple[XAxisT, YAxisT]]):
         )
 
     @property
-    def height(self) -> float | int | Percent:
+    def height(self) -> Length:
         """
         Height.
         """
@@ -73,8 +73,8 @@ class Region2(Region[tuple[XAxisT, YAxisT]]):
         self: "Region2T",
         x: Alignment | XAxisT,
         y: Alignment | YAxisT,
-        width: float | int | Percent,
-        height: float | int | Percent,
+        width: Length,
+        height: Length,
     ) -> "Region2T":
         """
         Creates a child region.
@@ -109,7 +109,7 @@ class Region2(Region[tuple[XAxisT, YAxisT]]):
         return self.y
 
     @property
-    def width(self) -> float | int | Percent:
+    def width(self) -> Length:
         """
         Width.
         """
@@ -147,7 +147,7 @@ class ResolvedRegion2(ResolvedRegion[tuple[XAxisT, YAxisT]]):
         return self.y_axis.add(self.top, self.height)
 
     @property
-    def height(self) -> float | int:
+    def height(self) -> ResolvedLength:
         """
         Height.
         """
@@ -166,8 +166,8 @@ class ResolvedRegion2(ResolvedRegion[tuple[XAxisT, YAxisT]]):
         self,
         x: Alignment | XAxisT,
         y: Alignment | YAxisT,
-        width: float | int | Percent,
-        height: float | int | Percent,
+        width: Length,
+        height: Length,
     ) -> Region2[XAxisT, YAxisT]:
         """
         Creates and returns a new two-dimensional subregion.
@@ -199,7 +199,7 @@ class ResolvedRegion2(ResolvedRegion[tuple[XAxisT, YAxisT]]):
         return self.y
 
     @property
-    def width(self) -> float | int:
+    def width(self) -> ResolvedLength:
         """
         Width.
         """

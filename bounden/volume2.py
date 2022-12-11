@@ -2,8 +2,8 @@ from typing import Optional, Type, TypeVar
 
 from bounden.resolution import GetResolvedVolume
 from bounden.resolved import ResolvedVolume
-from bounden.volumes.percent import Percent
-from bounden.volumes.volume import Volume
+from bounden.types import Length, Numeric, ResolvedLength
+from bounden.volume import Volume
 
 
 class Volume2(Volume):
@@ -14,8 +14,8 @@ class Volume2(Volume):
     @classmethod
     def new(
         cls: Type["Volume2T"],
-        width: float | int | Percent,
-        height: float | int | Percent,
+        width: Length,
+        height: Length,
         within: Optional[GetResolvedVolume] = None,
     ) -> "Volume2T":
         """
@@ -25,7 +25,7 @@ class Volume2(Volume):
         return cls(width, height, within=within)
 
     @property
-    def height(self) -> float | int | Percent:
+    def height(self) -> Length:
         """
         Height.
         """
@@ -33,7 +33,7 @@ class Volume2(Volume):
         return self[1]
 
     @property
-    def width(self) -> float | int | Percent:
+    def width(self) -> Length:
         """
         Width.
         """
@@ -47,7 +47,7 @@ class ResolvedVolume2(ResolvedVolume):
     """
 
     @property
-    def height(self) -> float | int:
+    def height(self) -> Numeric:
         """
         Height.
         """
@@ -57,8 +57,8 @@ class ResolvedVolume2(ResolvedVolume):
     @classmethod
     def new(
         cls: Type["ResolvedVolume2T"],
-        width: float | int,
-        height: float | int,
+        width: ResolvedLength,
+        height: ResolvedLength,
     ) -> "ResolvedVolume2T":
         """
         Creates a new resolved two-dimensional volume.
@@ -67,7 +67,7 @@ class ResolvedVolume2(ResolvedVolume):
         return cls(width, height)
 
     @property
-    def width(self) -> float | int:
+    def width(self) -> Numeric:
         """
         Width.
         """

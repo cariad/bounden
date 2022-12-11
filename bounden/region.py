@@ -5,9 +5,11 @@ from typing import Any, Generic, Optional, Sequence, TypeVar
 from bounden.axes import AxesT, Axis, get_axis
 from bounden.points import Point
 from bounden.resolution import RegionResolver
+from bounden.resolve import resolved_length_to_numeric
 from bounden.resolved.resolved_point import ResolvedPoint
 from bounden.resolved.resolved_volume import ResolvedVolume
-from bounden.volumes import Percent, Volume
+from bounden.types import Length, ResolvedLength
+from bounden.volume import Volume
 
 
 class Region(Generic[AxesT]):
@@ -18,7 +20,7 @@ class Region(Generic[AxesT]):
     def __init__(
         self,
         coordinates: AxesT,
-        volume: Sequence[float | int | Percent],
+        volume: Sequence[Length],
         axes: Optional[Sequence[Axis[Any]]] = None,
         within: Optional[RegionResolver] = None,
     ) -> None:
@@ -100,7 +102,7 @@ class Region(Generic[AxesT]):
     def region(
         self: "RegionT",
         coordinates: Sequence[Any],
-        volume: Sequence[float | int | Percent],
+        volume: Sequence[Length],
     ) -> "RegionT":
         """
         Creates a child region.
@@ -160,13 +162,15 @@ class ResolvedRegion(Generic[AxesT]):
 
     def expand(
         self: "ResolvedRegionT",
-        length: float | int,
+        length: ResolvedLength,
     ) -> "ResolvedRegionT":
         """
         Returns a new resolved region expanded by `length` about its centre.
 
         Pass a negative length to contract.
         """
+
+        length = resolved_length_to_numeric(length)
 
         coords = self._position - (length / 2)
         position = self._position.__class__(self._axes, coords)
@@ -187,7 +191,7 @@ class ResolvedRegion(Generic[AxesT]):
     def region(
         self,
         coordinates: AxesT,
-        volume: Sequence[float | int | Percent],
+        volume: Sequence[Length],
     ) -> Region[AxesT]:
         """
         Creates and returns a new subregion.

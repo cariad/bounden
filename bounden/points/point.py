@@ -85,7 +85,7 @@ class Point(Generic[AxesT]):
         for dimension, coordinate in enumerate(self._coordinates):
             if isinstance(coordinate, Alignment):
                 if self._within is None:
-                    raise ValueError(
+                    raise ValueError(  # pragma: nocover
                         f"{self.__class__.__name__} cannot resolve alignment "
                         f"{coordinate.name} without a parent region"
                     )
@@ -120,7 +120,7 @@ class Point(Generic[AxesT]):
 
                         translated_coords.append(axis.to_value(distance))
 
-                    case _:
+                    case _:  # pragma: nocover
                         m = f"Unrecognised alignment {repr(coordinate.value)}"
                         raise ValueError(m)
 

@@ -52,7 +52,6 @@ setup(
         "bounden.points",
         "bounden.resolution",
         "bounden.resolved",
-        "bounden.volumes",
     ],
     package_data={
         "bounden": ["py.typed"],
@@ -61,7 +60,6 @@ setup(
         "bounden.points": ["py.typed"],
         "bounden.resolution": ["py.typed"],
         "bounden.resolved": ["py.typed"],
-        "bounden.volumes": ["py.typed"],
     },
     project_urls={
         "Documentation": "https://bounden.dev",
