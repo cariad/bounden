@@ -16,7 +16,6 @@ classifiers = [
     "Natural Language :: English",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Typing :: Typed",
@@ -39,6 +38,7 @@ setup(
     include_package_data=True,
     install_requires=[
         "rebelbase==1.0.0a7",
+        "vinculum==1.0.0b6",
     ],
     license="MIT",
     long_description=long_description,
@@ -51,7 +51,6 @@ setup(
         "bounden.points",
         "bounden.resolution",
         "bounden.resolved",
-        "bounden.volumes",
     ],
     package_data={
         "bounden": ["py.typed"],
@@ -60,7 +59,6 @@ setup(
         "bounden.points": ["py.typed"],
         "bounden.resolution": ["py.typed"],
         "bounden.resolved": ["py.typed"],
-        "bounden.volumes": ["py.typed"],
     },
     project_urls={
         "Documentation": "https://bounden.dev",
@@ -68,7 +66,7 @@ setup(
         "Issues": "https://github.com/cariad/bounden/issues",
         "Source": "https://github.com/cariad/bounden",
     },
-    python_requires=">=3.9",
+    python_requires=">=3.10",
     url="https://bounden.dev",
     version=curr_version,
 )

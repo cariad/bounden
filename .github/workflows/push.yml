@@ -5,20 +5,42 @@ on:  # yamllint disable-line rule:truthy
       - "**"
 
 jobs:
-  validate:
+  validate-older:
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version:
+          # "3.9" is not supported
+          - "3.10"
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2.5.0
+      - uses: actions/checkout@v2.5.0
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - run: >
+          pip install --upgrade --user -r requirements.txt &&
+          pip install pytest pytest-cov &&
+          pytest -vv
+
+  validate-current:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2.5.0
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
 
       - name: Validate
-        uses: devcontainers/ci@v0.2
-        with:
-          push: never
-          runCmd: >
-            pip install --upgrade --user -r requirements.dev.txt &&
-            ./validate.sh &&
-            coverage xml &&
-            ./build.sh ${{ github.ref_name }}
-      - name: Publish code coverage
-        uses: codecov/codecov-action@v3.1.1
+        run: >
+          pip install --upgrade --user -r requirements.dev.txt &&
+          ./validate.sh &&
+          coverage xml &&
+          ./build.sh ${{ github.ref_name }}
+
+      - uses: codecov/codecov-action@v3.1.1

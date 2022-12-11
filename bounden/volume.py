@@ -1,8 +1,9 @@
 from typing import Any, Iterator, List, Optional, TypeVar
 
 from bounden.resolution.types import GetResolvedVolume
+from bounden.resolve import resolved_length_to_numeric
 from bounden.resolved import ResolvedVolume
-from bounden.volumes.percent import Percent
+from bounden.types import Length, Numeric, Percent
 
 
 class Volume:
@@ -14,7 +15,7 @@ class Volume:
 
     def __init__(
         self,
-        *lengths: float | int | Percent,
+        *lengths: Length,
         within: Optional[GetResolvedVolume] = None,
     ) -> None:
         self._lengths = lengths
@@ -24,10 +25,10 @@ class Volume:
     def __eq__(self, other: Any) -> bool:
         return bool(list(self) == list(other))
 
-    def __getitem__(self, dimension: int) -> float | int | Percent:
+    def __getitem__(self, dimension: int) -> Length:
         return self._lengths[dimension]
 
-    def __iter__(self) -> Iterator[float | int | Percent]:
+    def __iter__(self) -> Iterator[Length]:
         return iter(self._lengths)
 
     def __len__(self) -> int:
@@ -42,7 +43,7 @@ class Volume:
         """
 
         if self._resolved is None:
-            lengths: List[float | int] = []
+            lengths: List[Numeric] = []
 
             for index, length in enumerate(self._lengths):
                 if isinstance(length, Percent):
@@ -52,9 +53,13 @@ class Volume:
                             f"{self.__class__.__name__} {self} has no "
                             "parent so cannot fit to volume"
                         )
-                    length = length.calculate(within[index])
+                    within_length = within[index]
+                    resolved_length = length.calculate(within_length)
 
-                lengths.append(length)
+                else:
+                    resolved_length = resolved_length_to_numeric(length)
+
+                lengths.append(resolved_length)
 
             self._resolved = ResolvedVolume(*lengths)
 

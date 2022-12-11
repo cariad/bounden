@@ -2,6 +2,14 @@
 
 **Bounden** describes points and regions within _n_-dimensional space.
 
+## Installation
+
+**Bounden** requires Python 3.10 or later and can be installed from [PyPI](https://pypi.org/project/bounden/).
+
+```console
+pip install bounden
+```
+
 ## Support
 
 Please raise bugs, feature requests and ask questions at [cariad/bounden/issues](https://github.com/cariad/bounden/issues).
