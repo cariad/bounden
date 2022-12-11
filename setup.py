@@ -16,7 +16,6 @@ classifiers = [
     "Natural Language :: English",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Typing :: Typed",
@@ -67,7 +66,7 @@ setup(
         "Issues": "https://github.com/cariad/bounden/issues",
         "Source": "https://github.com/cariad/bounden",
     },
-    python_requires=">=3.9",
+    python_requires=">=3.10",
     url="https://bounden.dev",
     version=curr_version,
 )
