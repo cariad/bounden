@@ -1,2 +1,2 @@
 rebelbase==1.0.0a7
-vinculum==1.0.0b5
+vinculum==1.0.0b6

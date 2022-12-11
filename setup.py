@@ -39,7 +39,7 @@ setup(
     include_package_data=True,
     install_requires=[
         "rebelbase==1.0.0a7",
-        "vinculum==1.0.0b5",
+        "vinculum==1.0.0b6",
     ],
     license="MIT",
     long_description=long_description,
