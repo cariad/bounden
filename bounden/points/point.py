@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import (
     Any,
     Generic,
@@ -9,33 +11,36 @@ from typing import (
     cast,
 )
 
-from bounden.axes import AxesT, Axis, AxisOperation, get_axis
 from bounden.enums import Alignment
 from bounden.log import log
 from bounden.resolution import GetResolvedVolume, RegionResolver
 from bounden.resolved import ResolvedPoint
-from bounden.vectors import transform_coordinates
+from bounden.types import AxisPosition, CoordinatesT
+from bounden.vectors import get_vector_length  # transform_coordinates
 
 
-class Point(Generic[AxesT]):
+class Point(Generic[CoordinatesT]):
     """
     A point in n-dimensional space.
     """
 
     def __init__(
         self,
-        coordinates: AxesT,
-        axes: Optional[Sequence[Axis[Any]]] = None,
+        coordinates: CoordinatesT,
         origin_of: Optional[GetResolvedVolume] = None,
         within: Optional[RegionResolver] = None,
     ) -> None:
-        self._axes = axes or tuple(get_axis(c) for c in coordinates)
         self._coordinates = coordinates
         self._origin_of = origin_of
         self._within = within
 
     def __add__(self: "PointT", other: Any) -> "PointT":
-        return self._operate(other, AxisOperation.Add)
+        coords: List[AxisPosition[Any]] = []
+        for dimension, coordinate in enumerate(self._coordinates):
+            length = get_vector_length(other, dimension)
+            coords.append(coordinate + length)
+
+        return self._respawn(coords)
 
     def __eq__(self, other: Any) -> bool:
         return list(self) == list(other)
@@ -49,37 +54,30 @@ class Point(Generic[AxesT]):
     def __repr__(self) -> str:
         return str(self._coordinates)
 
-    def __sub__(self, other: Any) -> "Point[AxesT]":
-        return self._operate(other, AxisOperation.Subtract)
+    def __sub__(self, other: Any) -> Point[CoordinatesT]:
+        coords: List[AxisPosition[Any]] = []
+        for dimension, coordinate in enumerate(self._coordinates):
+            length = get_vector_length(other, dimension)
+            coords.append(coordinate - length)
 
-    def _operate(self: "PointT", vector: Any, op: AxisOperation) -> "PointT":
-        """
-        Returns a new point based on the `op` between this and `vector`.
-        """
+        return self._respawn(coords)
 
-        coordinates = transform_coordinates(
-            self._axes,
-            self._coordinates,
-            vector,
-            op,
-        )
-
+    def _respawn(self: PointT, coords: Sequence[AxisPosition[Any]]) -> PointT:
         return self.__class__(
-            coordinates,
-            axes=self._axes,
+            coords,
             origin_of=self._origin_of,
             within=self._within,
         )
 
     @property
-    def coordinates(self) -> AxesT:
+    def coordinates(self) -> CoordinatesT:
         """
         Coordinates.
         """
 
         return self._coordinates
 
-    def resolve(self) -> ResolvedPoint[AxesT]:
+    def resolve(self) -> ResolvedPoint[CoordinatesT]:
         translated_coords: List[Any] = []
 
         for dimension, coordinate in enumerate(self._coordinates):
@@ -97,8 +95,8 @@ class Point(Generic[AxesT]):
                         translated_coords.append(within_offset)
 
                     case Alignment.Center:
-                        axis = self._axes[dimension]
-                        distance = axis.to_decimal(within_offset)
+                        # axis = self._axes[dimension]
+                        distance = coordinate.to_decimal(within_offset)
 
                         within_len = self._within.volume()[dimension]
                         distance += within_len / 2
@@ -106,11 +104,11 @@ class Point(Generic[AxesT]):
                         if self._origin_of is not None:
                             distance -= self._origin_of()[dimension] / 2
 
-                        translated_coords.append(axis.to_value(distance))
+                        translated_coords.append(coordinate.to_value(distance))
 
                     case Alignment.Far:
-                        axis = self._axes[dimension]
-                        distance = axis.to_decimal(within_offset)
+                        # axis = self._axes[dimension]
+                        distance = coordinate.to_decimal(within_offset)
 
                         within_len = self._within.volume()[dimension]
                         distance += within_len
@@ -118,7 +116,7 @@ class Point(Generic[AxesT]):
                         if self._origin_of:
                             distance -= self._origin_of()[dimension]
 
-                        translated_coords.append(axis.to_value(distance))
+                        translated_coords.append(coordinate.to_value(distance))
 
                     case _:  # pragma: nocover
                         m = f"Unrecognised alignment {repr(coordinate.value)}"
@@ -128,15 +126,14 @@ class Point(Generic[AxesT]):
                 translated = coordinate
 
                 if self._within is not None:
-                    axis = self._axes[dimension]
                     within_origin = self._within.position()
-                    translated = axis.add(coordinate, within_origin[dimension])
+                    translated = coordinate + within_origin[dimension]
 
                 translated_coords.append(translated)
 
-        resolved_point = cast(AxesT, tuple(translated_coords))
+        resolved_point = cast(CoordinatesT, tuple(translated_coords))
         log.debug("Resolved %s to %s", self, resolved_point)
-        return ResolvedPoint(self._axes, resolved_point)
+        return ResolvedPoint(resolved_point)
 
 
 PointT = TypeVar("PointT", bound=Point[Any])

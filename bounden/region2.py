@@ -1,16 +1,23 @@
 from __future__ import annotations
 
-from typing import Any, Optional, Sequence, Type, TypeVar, cast
+from typing import Any, Optional, Type, TypeVar
 
-from bounden.axes import Axis, XAxisT, YAxisT
+# from bounden.axes import Axis
 from bounden.enums import Alignment
 from bounden.points import Point2
 from bounden.region import Region, ResolvedRegion
 from bounden.resolution import RegionResolver
-from bounden.types import Length, ResolvedLength
+from bounden.types import Length, XAxisT, XLengthT, YAxisT, YLengthT
+
+# from bounden.volume2 import ResolvedVolume2
 
 
-class Region2(Region[tuple[XAxisT, YAxisT]]):
+class Region2(
+    Region[
+        tuple[XAxisT, YAxisT],
+        tuple[XLengthT, YLengthT],
+    ]
+):
     """
     A region of two-dimensional space.
     """
@@ -20,9 +27,9 @@ class Region2(Region[tuple[XAxisT, YAxisT]]):
         cls: Type["Region2T"],
         x: Alignment | XAxisT,
         y: Alignment | YAxisT,
-        width: Length,
-        height: Length,
-        axes: Optional[Sequence[Axis[Any]]] = None,
+        width: XLengthT,
+        height: YLengthT,
+        # axes: Optional[Sequence[Axis[Any]]] = None,
         within: Optional[RegionResolver] = None,
     ) -> "Region2T":
         """
@@ -32,17 +39,17 @@ class Region2(Region[tuple[XAxisT, YAxisT]]):
         return cls(
             (x, y),
             (width, height),
-            axes=axes,
+            # axes=axes,
             within=within,
         )
 
     @property
-    def height(self) -> Length:
+    def height(self) -> YLengthT:
         """
         Height.
         """
 
-        return self.volume[1]
+        return self.volume.lengths[1]
 
     @property
     def left(self) -> Alignment | XAxisT:
@@ -64,7 +71,7 @@ class Region2(Region[tuple[XAxisT, YAxisT]]):
         return Point2.new(
             x,
             y,
-            axes=self._axes,
+            # axes=self._axes,
             origin_of=None,
             within=self._resolver,
         )
@@ -85,17 +92,17 @@ class Region2(Region[tuple[XAxisT, YAxisT]]):
             y,
             width,
             height,
-            axes=self._axes,
+            # axes=self._axes,
             within=self._resolver,
         )
 
-    def resolve(self) -> ResolvedRegion2[XAxisT, YAxisT]:
+    def resolve2(self) -> ResolvedRegion2[XAxisT, YAxisT, XLengthT, YLengthT]:
         """
         Resolves the region.
         """
 
         return ResolvedRegion2(
-            self._axes,
+            # self._axes,
             self._position.resolve(),
             self._volume.resolve(),
         )
@@ -109,12 +116,12 @@ class Region2(Region[tuple[XAxisT, YAxisT]]):
         return self.y
 
     @property
-    def width(self) -> Length:
+    def width(self) -> XLengthT:
         """
         Width.
         """
 
-        return self.volume[0]
+        return self.volume.lengths[0]
 
     @property
     def x(self) -> Alignment | XAxisT:
@@ -133,26 +140,32 @@ class Region2(Region[tuple[XAxisT, YAxisT]]):
         return self.position.coordinates[1]
 
 
-class ResolvedRegion2(ResolvedRegion[tuple[XAxisT, YAxisT]]):
+class ResolvedRegion2(
+    ResolvedRegion[
+        tuple[XAxisT, YAxisT],
+        tuple[XLengthT, YLengthT],
+    ]
+):
     """
     A resolved region of two-dimensional space.
     """
 
-    @property
-    def bottom(self) -> YAxisT:
-        """
-        Bottom.
-        """
+    # @property
+    # def bottom(self) -> YAxisT:
+    #     """
+    #     Bottom.
+    #     """
 
-        return self.y_axis.add(self.top, self.height)
+    #     # return self.y_axis.add(self.top, self.height.resolved)
+    #     return self.top + self.height.resolved
 
     @property
-    def height(self) -> ResolvedLength:
+    def height(self) -> YLengthT:
         """
         Height.
         """
 
-        return self._volume[1]
+        return self._volume.lengths[1]
 
     @property
     def left(self) -> XAxisT:
@@ -166,9 +179,9 @@ class ResolvedRegion2(ResolvedRegion[tuple[XAxisT, YAxisT]]):
         self,
         x: Alignment | XAxisT,
         y: Alignment | YAxisT,
-        width: Length,
-        height: Length,
-    ) -> Region2[XAxisT, YAxisT]:
+        width: XLengthT,
+        height: YLengthT,
+    ) -> Region2[XAxisT, YAxisT, XLengthT, YLengthT]:
         """
         Creates and returns a new two-dimensional subregion.
         """
@@ -178,17 +191,19 @@ class ResolvedRegion2(ResolvedRegion[tuple[XAxisT, YAxisT]]):
             y,
             width,
             height,
-            self._axes,
+            # self._axes,
             within=RegionResolver(self._position, self._volume),
         )
 
-    @property
-    def right(self) -> XAxisT:
-        """
-        Right.
-        """
+    # @property
+    # def right(self) -> XAxisT:
+    #     """
+    #     Right.
+    #     """
 
-        return self.x_axis.add(self.left, self.width)
+    #     # return self.x_axis.add(self.left, self.width.resolved)
+    #     right = self.left + self.width.resolved
+    #     return right
 
     @property
     def top(self) -> YAxisT:
@@ -199,12 +214,12 @@ class ResolvedRegion2(ResolvedRegion[tuple[XAxisT, YAxisT]]):
         return self.y
 
     @property
-    def width(self) -> ResolvedLength:
+    def width(self) -> XLengthT:
         """
         Width.
         """
 
-        return self._volume[0]
+        return self._volume.lengths[0]
 
     @property
     def x(self) -> XAxisT:
@@ -214,13 +229,13 @@ class ResolvedRegion2(ResolvedRegion[tuple[XAxisT, YAxisT]]):
 
         return self._position.coordinates[0]
 
-    @property
-    def x_axis(self) -> Axis[XAxisT]:
-        """
-        X axis.
-        """
+    # @property
+    # def x_axis(self) -> Axis[XAxisT]:
+    #     """
+    #     X axis.
+    #     """
 
-        return cast(Axis[XAxisT], self._axes[0])
+    #     return cast(Axis[XAxisT], self._axes[0])
 
     @property
     def y(self) -> YAxisT:
@@ -230,13 +245,13 @@ class ResolvedRegion2(ResolvedRegion[tuple[XAxisT, YAxisT]]):
 
         return self._position.coordinates[1]
 
-    @property
-    def y_axis(self) -> Axis[YAxisT]:
-        """
-        Y axis.
-        """
+    # @property
+    # def y_axis(self) -> Axis[YAxisT]:
+    #     """
+    #     Y axis.
+    #     """
 
-        return cast(Axis[YAxisT], self._axes[1])
+    #     return cast(Axis[YAxisT], self._axes[1])
 
 
-Region2T = TypeVar("Region2T", bound=Region2[Any, Any])
+Region2T = TypeVar("Region2T", bound=Region2[Any, Any, Any, Any])

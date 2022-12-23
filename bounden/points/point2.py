@@ -1,9 +1,10 @@
-from typing import Any, Optional, Sequence, Type, TypeVar
+from typing import Any, Optional, Type, TypeVar
 
-from bounden.axes import Axis, XAxisT, YAxisT
+# from bounden.axes import Axis
 from bounden.enums import Alignment
 from bounden.points.point import Point
 from bounden.resolution import GetResolvedVolume, RegionResolver
+from bounden.types import XAxisT, YAxisT
 
 
 class Point2(Point[tuple[XAxisT, YAxisT]]):
@@ -16,7 +17,7 @@ class Point2(Point[tuple[XAxisT, YAxisT]]):
         cls: Type["Point2T"],
         x: Alignment | XAxisT,
         y: Alignment | YAxisT,
-        axes: Optional[Sequence[Axis[Any]]] = None,
+        # axes: Optional[Sequence[Axis[Any]]] = None,
         origin_of: Optional[GetResolvedVolume] = None,
         within: Optional[RegionResolver] = None,
     ) -> "Point2T":
@@ -26,7 +27,7 @@ class Point2(Point[tuple[XAxisT, YAxisT]]):
 
         return cls(
             (x, y),
-            axes=axes,
+            # axes=axes,
             origin_of=origin_of,
             within=within,
         )

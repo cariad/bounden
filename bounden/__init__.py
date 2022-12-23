@@ -6,25 +6,22 @@ For usage and support, see https://github.com/cariad/bounden.
 
 from importlib.resources import files
 
-from bounden.axes import (
-    AxesT,
-    Axis,
-    AxisOperation,
-    FloatAxis,
-    IntegerAxis,
-    NoAxisForType,
-    StringAxis,
-    XAxisT,
-    YAxisT,
-    get_axis,
-    register_axis,
-)
 from bounden.enums import Alignment
 from bounden.points import Point, Point2
 from bounden.region import Region, RegionT, ResolvedRegion, ResolvedRegionT
 from bounden.region2 import Region2, Region2T, ResolvedRegion2
 from bounden.resolved import ResolvedPoint, ResolvedVolume
-from bounden.types import Percent
+from bounden.types import (
+    AxisPosition,
+    CoordinatesT,
+    IntegerAxisPosition,
+    IntegerLength,
+    LengthC,
+    Percent,
+    StringAxisPosition,
+    XAxisT,
+    YAxisT,
+)
 from bounden.volume import Volume, VolumeT
 from bounden.volume2 import (
     ResolvedVolume2,
@@ -44,13 +41,13 @@ def version() -> str:
 
 
 __all__ = [
+    "AxisPosition",
+    "StringAxisPosition",
+    "IntegerAxisPosition",
+    "IntegerLength",
     "Alignment",
-    "Axis",
-    "AxisOperation",
-    "AxesT",
-    "IntegerAxis",
-    "FloatAxis",
-    "NoAxisForType",
+    "CoordinatesT",
+    "LengthC",
     "Percent",
     "Point",
     "Point2",
@@ -65,14 +62,11 @@ __all__ = [
     "ResolvedVolume",
     "ResolvedVolume2",
     "ResolvedVolume2T",
-    "StringAxis",
     "Volume",
     "Volume2",
     "Volume2T",
     "VolumeT",
     "XAxisT",
     "YAxisT",
-    "get_axis",
-    "register_axis",
     "version",
 ]

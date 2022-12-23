@@ -1,25 +1,25 @@
-from typing import Any, Generic, Iterator, Sequence, TypeVar
+from typing import Any, Generic, Iterator, List, TypeVar
 
-from bounden.axes import AxesT, Axis, AxisOperation
 from bounden.protocols import ResolvedPointProtocol
-from bounden.vectors import transform_coordinates
+from bounden.types import AxisPosition, CoordinatesT
+from bounden.vectors import get_vector_length
 
 
-class ResolvedPoint(ResolvedPointProtocol, Generic[AxesT]):
+class ResolvedPoint(ResolvedPointProtocol, Generic[CoordinatesT]):
     """
     A resolved point in n-dimensional space.
     """
 
-    def __init__(
-        self,
-        axes: Sequence[Axis[Any]],
-        coordinates: AxesT,
-    ) -> None:
-        self._axes = axes
+    def __init__(self, coordinates: CoordinatesT) -> None:
         self._coordinates = coordinates
 
     def __add__(self: "ResolvedPointT", other: Any) -> "ResolvedPointT":
-        return self._operate(other, AxisOperation.Add)
+        coords: List[AxisPosition[Any]] = []
+        for dimension, coordinate in enumerate(self._coordinates):
+            length = get_vector_length(other, dimension)
+            coords.append(coordinate + length)
+
+        return self.__class__(coords)
 
     def __eq__(self, other: Any) -> bool:
         return list(self) == list(other)
@@ -34,28 +34,15 @@ class ResolvedPoint(ResolvedPointProtocol, Generic[AxesT]):
         return repr(self._coordinates)
 
     def __sub__(self: "ResolvedPointT", other: Any) -> "ResolvedPointT":
-        return self._operate(other, AxisOperation.Subtract)
+        coords: List[AxisPosition[Any]] = []
+        for dimension, coordinate in enumerate(self._coordinates):
+            length = get_vector_length(other, dimension)
+            coords.append(coordinate - length)
 
-    def _operate(
-        self: "ResolvedPointT",
-        vector: Any,
-        operation: AxisOperation,
-    ) -> "ResolvedPointT":
-        """
-        Returns a new point based on the `operation` between this and `vector`.
-        """
-
-        coordinates = transform_coordinates(
-            self._axes,
-            self._coordinates,
-            vector,
-            operation,
-        )
-
-        return self.__class__(self._axes, coordinates)
+        return self.__class__(coords)
 
     @property
-    def coordinates(self) -> AxesT:
+    def coordinates(self) -> CoordinatesT:
         """
         Coordinates.
         """

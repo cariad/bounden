@@ -2,44 +2,40 @@ from __future__ import annotations
 
 from typing import Any, Generic, Optional, Sequence, TypeVar
 
-from bounden.axes import AxesT, Axis, get_axis
+# from bounden.axes import Axis  # , get_axis
 from bounden.points import Point
 from bounden.resolution import RegionResolver
 from bounden.resolve import resolved_length_to_numeric
 from bounden.resolved.resolved_point import ResolvedPoint
 from bounden.resolved.resolved_volume import ResolvedVolume
-from bounden.types import Length, ResolvedLength
+from bounden.types import CoordinatesT, LengthsT, ResolvedLength
 from bounden.volume import Volume
 
 
-class Region(Generic[AxesT]):
+class Region(Generic[CoordinatesT, LengthsT]):
     """
     A region of n-dimensional space.
     """
 
     def __init__(
         self,
-        coordinates: AxesT,
-        volume: Sequence[Length],
-        axes: Optional[Sequence[Axis[Any]]] = None,
+        coordinates: CoordinatesT,
+        lengths: LengthsT,
         within: Optional[RegionResolver] = None,
     ) -> None:
-        if len(coordinates) != len(volume):
+        if len(coordinates) != len(lengths):
             raise ValueError(
                 f"Coordinates count ({len(coordinates)}) "
-                f"!= lengths count ({len(volume)})"
+                f"!= lengths count ({len(lengths)})"
             )
 
-        self._axes = axes or tuple(get_axis(c) for c in coordinates)
-
         self._volume = Volume(
-            *volume,
+            lengths,
             within=within.volume if within else None,
         )
 
-        self._position = Point[AxesT](
+        self._position = Point[CoordinatesT](
             coordinates,
-            axes=self._axes,
             within=within,
             origin_of=self._volume.resolve,
         )
@@ -55,7 +51,6 @@ class Region(Generic[AxesT]):
         return self.__class__(
             tuple(self._position + other),
             tuple(self._volume),
-            axes=self._axes,
             within=self._within,
         )
 
@@ -69,32 +64,30 @@ class Region(Generic[AxesT]):
     def __repr__(self) -> str:
         return f"{self._position} x {self._volume}"
 
-    def point(self, coordinates: Any) -> Point[AxesT]:
+    def point(self, coordinates: Any) -> Point[CoordinatesT]:
         """
         Creates a child point.
         """
 
         return Point(
             coordinates,
-            axes=self._axes,
             within=self._resolver,
         )
 
     @property
-    def position(self) -> Point[AxesT]:
+    def position(self) -> Point[CoordinatesT]:
         """
         Position.
         """
 
         return self._position
 
-    def resolve(self) -> ResolvedRegion[AxesT]:
+    def resolve(self) -> ResolvedRegion[CoordinatesT, LengthsT]:
         """
         Resolves the region.
         """
 
         return ResolvedRegion(
-            self._axes,
             self._position.resolve(),
             self._volume.resolve(),
         )
@@ -102,7 +95,7 @@ class Region(Generic[AxesT]):
     def region(
         self: "RegionT",
         coordinates: Sequence[Any],
-        volume: Sequence[Length],
+        lengths: LengthsT,
     ) -> "RegionT":
         """
         Creates a child region.
@@ -110,13 +103,12 @@ class Region(Generic[AxesT]):
 
         return self.__class__(
             coordinates,
-            volume,
-            axes=self._axes,
+            lengths,
             within=self._resolver,
         )
 
     @property
-    def volume(self) -> Volume:
+    def volume(self) -> Volume[LengthsT]:
         """
         Volume.
         """
@@ -124,18 +116,17 @@ class Region(Generic[AxesT]):
         return self._volume
 
 
-class ResolvedRegion(Generic[AxesT]):
+class ResolvedRegion(Generic[CoordinatesT, LengthsT]):
     """
     A resolved region of n-dimensional space.
     """
 
     def __init__(
         self,
-        axes: Sequence[Axis[Any]],
-        position: ResolvedPoint[AxesT],
-        volume: ResolvedVolume,
+        position: ResolvedPoint[CoordinatesT],
+        volume: ResolvedVolume[LengthsT],
     ) -> None:
-        self._axes = axes
+        self._axes = None  # axes
         self._position = position
         self._volume = volume
 
@@ -155,7 +146,11 @@ class ResolvedRegion(Generic[AxesT]):
         return False
 
     def __add__(self: "ResolvedRegionT", other: Any) -> "ResolvedRegionT":
-        return self.__class__(self._axes, self._position + other, self._volume)
+        return self.__class__(
+            # self._axes,
+            self._position + other,
+            self._volume,
+        )
 
     def __repr__(self) -> str:
         return f"{self._position} x {self._volume}"
@@ -173,15 +168,15 @@ class ResolvedRegion(Generic[AxesT]):
         length = resolved_length_to_numeric(length)
 
         coords = self._position - (length / 2)
-        position = self._position.__class__(self._axes, coords)
+        position = self._position.__class__(coords)
 
         lengths = [vl + length for vl in self._volume]
         volume = self._volume.__class__(*lengths)
 
-        return self.__class__(self._axes, position, volume)
+        return self.__class__(position, volume)
 
     @property
-    def position(self) -> ResolvedPoint[AxesT]:
+    def position(self) -> ResolvedPoint[CoordinatesT]:
         """
         Position.
         """
@@ -190,9 +185,9 @@ class ResolvedRegion(Generic[AxesT]):
 
     def region(
         self,
-        coordinates: AxesT,
-        volume: Sequence[Length],
-    ) -> Region[AxesT]:
+        coordinates: CoordinatesT,
+        volume: LengthsT,
+    ) -> Region[CoordinatesT, LengthsT]:
         """
         Creates and returns a new subregion.
         """
@@ -200,12 +195,11 @@ class ResolvedRegion(Generic[AxesT]):
         return Region(
             coordinates,
             volume,
-            self._axes,
             within=RegionResolver(self._position, self._volume),
         )
 
     @property
-    def volume(self) -> ResolvedVolume:
+    def volume(self) -> ResolvedVolume[LengthsT]:
         """
         Volume.
         """
@@ -213,5 +207,5 @@ class ResolvedRegion(Generic[AxesT]):
         return self._volume
 
 
-RegionT = TypeVar("RegionT", bound=Region[Any])
-ResolvedRegionT = TypeVar("ResolvedRegionT", bound=ResolvedRegion[Any])
+RegionT = TypeVar("RegionT", bound=Region[Any, Any])
+ResolvedRegionT = TypeVar("ResolvedRegionT", bound=ResolvedRegion[Any, Any])
